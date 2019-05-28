@@ -1,0 +1,12 @@
+<module rename-to='nemesis'>
+  <inherits name='playn.PlayN'/>
+  <inherits name='NemesisGameAssets'/>
+  <inherits name="tripleplay.TriplePlay"/>
+
+  <source path='core'/>
+  <source path='html'/>
+
+  <public path="resources" />
+
+  <entry-point class='com.superjose128.nemesis.html.NemesisGameHtml'/>
+</module>
