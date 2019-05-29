@@ -1,18 +1,10 @@
 package com.superjose128.nemesis.core;
 
 import com.superjose128.nemesis.core.powerup.WeaponSelectionModel;
-
-import playn.core.Mouse;
-import playn.core.Mouse.ButtonEvent;
-import playn.core.Mouse.MotionEvent;
-import playn.core.Mouse.WheelEvent;
-import playn.core.PlayN;
-import playn.core.Touch;
+import playn.scene.Touch;
 import pythagoras.f.Point;
-import pythagoras.f.Vector;
 
-
-public class TouchDirGameControl implements Touch.LayerListener{
+public class TouchDirGameControl extends Touch.Listener {
 	private Controllable player;
 	private WeaponSelectionModel selectionModel;
 	
@@ -35,11 +27,11 @@ public class TouchDirGameControl implements Touch.LayerListener{
 	}
 
 	@Override
-	public void onTouchStart(Touch.Event touch) {
+	public void onStart(Touch.Interaction interaction) {
 		switch(mode){
 			case MODE_DIR:
-				prev.x = touch.localX();
-				prev.y = touch.localY();
+				prev.x = interaction.x();
+				prev.y = interaction.y();
 				break;
 			case MODE_FIRE:
 				player.fire();
@@ -53,10 +45,10 @@ public class TouchDirGameControl implements Touch.LayerListener{
 	}
 
 	@Override
-	public void onTouchMove(Touch.Event touch) {
+	public void onMove(Touch.Interaction interaction) {
 		switch(mode){
 			case MODE_DIR:
-				Point current = new Point(touch.localX(),touch.localY());			
+				Point current = new Point(interaction.x(),interaction.y());
 				current.subtract(prev, move);
 				
 				if(move.x() > -thresholdMin && move.x () < thresholdMin){
@@ -88,7 +80,7 @@ public class TouchDirGameControl implements Touch.LayerListener{
 	}
 
 	@Override
-	public void onTouchEnd(Touch.Event touch) {
+	public void onEnd(Touch.Interaction interaction) {
 		if(mode == MODE_DIR){
 			player.stopHorizontal();
 			player.stopVertical();
@@ -96,7 +88,7 @@ public class TouchDirGameControl implements Touch.LayerListener{
 	}
 
 	@Override
-	public void onTouchCancel(Touch.Event touch) {
+	public void onCancel(Touch.Interaction interaction) {
 		if(mode == MODE_DIR){
 			player.stopHorizontal();
 			player.stopVertical();

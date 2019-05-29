@@ -1,13 +1,8 @@
 package com.superjose128.nemesis.core.powerup;
 
-import playn.core.Asserts;
-import playn.core.Log;
-import playn.core.PlayN;
-import playn.core.util.Clock;
-import pythagoras.f.*;
-
 import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
+import pythagoras.f.Point;
 
 /**
  * A powerup is a characteristic that can be applied to a player (xtra speed, a weapon, a shield, etc.)
@@ -22,7 +17,7 @@ public abstract class PowerUp {
 	
 	protected int level = 1;
 	protected int maxLevels = 1;
-	protected Player owner = null; 	
+	protected Player owner = null;
 	protected boolean enabled = true;
 	/* Indicates it's an indispensable powerup and can't be disarmed, but disabled */
 	protected boolean basic = false;

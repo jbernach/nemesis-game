@@ -1,19 +1,17 @@
 package com.superjose128.nemesis.core.actor;
 
-import static playn.core.PlayN.*;
-
+import com.superjose128.nemesis.core.GameWorld;
+import com.superjose128.nemesis.core.NemesisGame;
+import com.superjose128.nemesis.core.collision.CollideableTypes;
+import com.superjose128.nemesis.core.powerup.*;
+import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.Shape;
-
 import playn.core.Image;
 import tripleplay.sound.Playable;
 
-import com.superjose128.nemesis.core.GameWorld;
-import com.superjose128.nemesis.core.NemesisGame;
-import com.superjose128.nemesis.core.powerup.*;
-import com.superjose128.nemesis.core.sprites.AnimatedSprite;
-import com.superjose128.nemesis.core.collision.Collideable;
-import com.superjose128.nemesis.core.collision.CollideableTypes;
+import static playn.core.PlayN.*;
+import static playn.core.PlayN.assets;
 
 
 public class PlayerMetallion extends Player {

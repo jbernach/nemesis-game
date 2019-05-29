@@ -1,31 +1,26 @@
 package com.superjose128.nemesis.core;
 
-import static playn.core.PlayN.*;
+import com.superjose128.nemesis.core.actor.Actor;
+import com.superjose128.nemesis.core.actor.Player;
+import com.superjose128.nemesis.core.actor.PlayerMetallion;
+import com.superjose128.nemesis.core.actor.enemies.Barrel;
+import com.superjose128.nemesis.core.actor.enemies.Enemy;
+import com.superjose128.nemesis.core.collision.CollideableTypes;
+import com.superjose128.nemesis.core.collision.Collision;
+import com.superjose128.nemesis.core.collision.CollisionManager;
+import com.superjose128.nemesis.core.powerup.*;
+import playn.core.*;
+import playn.scene.GroupLayer;
+import playn.scene.ImageLayer;
+import playn.scene.Layer;
+import pythagoras.f.Point;
+import react.Connection;
+import react.Slot;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.superjose128.nemesis.core.actor.*;
-import com.superjose128.nemesis.core.actor.enemies.*;
-import com.superjose128.nemesis.core.collision.CollideableTypes;
-import com.superjose128.nemesis.core.collision.Collision;
-import com.superjose128.nemesis.core.collision.CollisionManager;
-import com.superjose128.nemesis.core.powerup.*;
-
-import playn.core.Connection;
-import playn.core.GroupLayer;
-import playn.core.Image;
-import playn.core.ImageLayer;
-import playn.core.Layer;
-import playn.core.PlayN;
-import playn.core.Surface;
-import playn.core.SurfaceImage;
-import playn.core.Touch;
-import playn.core.Mouse;
-import playn.core.util.Clock;
-import pythagoras.f.Point;
-import react.Slot;
 
 /**
  * Represents a level inside the game.
@@ -42,17 +37,18 @@ public class GameWorld {
 	public final static int WORLD_HEIGHT = NATIVE_RES_HEIGHT - SCORE_AREA_HEIGHT;
 	
 	private final GameWorldScreen gameScreen;
+	private final Platform plat;
 	
 	private KeyboardGameControl keyControl;
 	private final TouchDirGameControl[] touchControls = new TouchDirGameControl[3];
 	private final Connection[] touchConnections= new Connection[3];
 
-	private final GroupLayer controlPadLayer = graphics().createGroupLayer(NATIVE_RES_WIDTH,NATIVE_RES_WIDTH);
+	private final GroupLayer controlPadLayer = new GroupLayer(NATIVE_RES_WIDTH,NATIVE_RES_WIDTH)
 	private final Layer[] controlDirLayers = new Layer[3];
 
-	private final GroupLayer backgroundLayer = graphics().createGroupLayer(NATIVE_RES_WIDTH,NATIVE_RES_WIDTH);
-	private final GroupLayer scoreLayer = graphics().createGroupLayer(WORLD_WIDTH,SCORE_AREA_HEIGHT);
-	private final GroupLayer actorLayer = graphics().createGroupLayer(WORLD_WIDTH,WORLD_HEIGHT);
+	private final GroupLayer backgroundLayer = new GroupLayer(NATIVE_RES_WIDTH,NATIVE_RES_WIDTH);
+	private final GroupLayer scoreLayer = new GroupLayer(WORLD_WIDTH,SCORE_AREA_HEIGHT);
+	private final GroupLayer actorLayer = new GroupLayer(WORLD_WIDTH,WORLD_HEIGHT);
 	
 	private WeaponBoard weaponBoard1;
 	private Player player1 = null;
@@ -68,15 +64,14 @@ public class GameWorld {
 	
 	public GameWorld(GameWorldScreen gameScreen){
 		this.gameScreen = gameScreen;
-		useScreenPad = touch().hasTouch();
-		useScreenPad = true;
-		
+		this.plat = gameScreen.game().plat;
+		this.useScreenPad = this.plat.input().hasTouch();
+
 		this.gameScreen.layer.add(this.backgroundLayer);
 		this.gameScreen.layer.add(this.actorLayer);
 		scoreLayer.setTy(WORLD_HEIGHT); // To display the score layer under the actor layer, in the bottom of the screen
 		
 		this.gameScreen.layer.add(this.scoreLayer); // on top of control
-		
 		
 		createScreenPad();
 				
@@ -86,7 +81,7 @@ public class GameWorld {
 	public void update(int delta) {
 		Actor[] actorsArray = actors.toArray(new Actor[0]);
 		
-		for(Actor actor:actorsArray){	
+		for(Actor actor:actorsArray){
 			actor.update(delta);
 		}
 				
@@ -121,7 +116,7 @@ public class GameWorld {
 	public void paint(Clock clock) {
 		weaponBoard1.paint(clock);
 		
-		for(Iterator<Actor> it = actors.iterator();it.hasNext();){
+		for(Iterator<Actor> it = actors.iterator(); it.hasNext();){
 			it.next().paint(clock);
 		}
 	}
@@ -132,18 +127,19 @@ public class GameWorld {
 		initIO();	
 	}
 	
-	private void initIO(){		
-		pointer().setListener(null);
-		keyboard().setListener(null);
-		
+	private void initIO() {
+		this.plat.input().touchEvents.connect(events -> {
+
+		});
+
 		keyControl = new KeyboardGameControl(this.getPlayer1(), this.getWeaponSel1(),this);
-			
-		keyboard().setListener(keyControl);
-		
+
+		this.gameScreen.game().plat.input().keyboardEvents.connect(keyControl);
+
 		if(useScreenPad){
 			for(Connection conn:touchConnections){
 				if(conn != null){
-					conn.disconnect();
+					conn.close();
 				}
 			}
 			
@@ -159,22 +155,22 @@ public class GameWorld {
 		if(!useScreenPad) return;
 		this.gameScreen.layer.add(this.controlPadLayer);
 		
-		Image imgPad = assets().getImage("images/dir_pad.png");
+		Image imgPad = plat.assets().getImage("images/dir_pad.png");
 		
-		controlDirLayers[0] = graphics().createImageLayer(imgPad);
+		controlDirLayers[0] = new ImageLayer(imgPad);
 		controlDirLayers[0].setTranslation(0,0);
 		controlDirLayers[0].setAlpha(0.1f);
 		controlPadLayer.add(controlDirLayers[0]);
 		
-		Image imgButton = assets().getImage("images/button_pad.png");
+		Image imgButton = plat.assets().getImage("images/button_pad.png");
 		// fire
-		controlDirLayers[1] = graphics().createImageLayer(imgButton);
+		controlDirLayers[1] = new ImageLayer(imgButton);
 		controlDirLayers[1].setOrigin(90, 90);
 		controlDirLayers[1].setTranslation(920,620);
 		controlDirLayers[1].setAlpha(0.1f);
 		controlPadLayer.add(controlDirLayers[1]);
 		
-		controlDirLayers[2] = graphics().createImageLayer(imgButton);
+		controlDirLayers[2] = new ImageLayer(imgButton);
 		controlDirLayers[2].setOrigin(90, 90);
 		controlDirLayers[2].setTranslation(1130,620);
 		controlDirLayers[2].setAlpha(0.1f);
@@ -183,7 +179,7 @@ public class GameWorld {
 	}
 	
 	private void initWeaponBoard(){
-		weaponBoard1 = new WeaponBoard(WORLD_WIDTH, SCORE_AREA_HEIGHT, 10);
+		weaponBoard1 = new WeaponBoard(plat, WORLD_WIDTH, SCORE_AREA_HEIGHT, 10);
 		weaponSel1 = new WeaponSelectionModel(player1, weaponBoard1);
 		
 		weaponSel1.addSelectablePowerUp(new SpeedPowerUp());
@@ -192,8 +188,12 @@ public class GameWorld {
 		weaponSel1.addSelectablePowerUp(new LaserPowerUp());
 		weaponSel1.addSelectablePowerUp(new OptionPowerUp());
 		weaponSel1.addSelectablePowerUp(new ShieldPowerUp());
-		
-		scoreLayer.add(graphics().createImageLayer(weaponBoard1.surfaceImg));
+
+		scoreLayer.add(new Layer() {
+			@Override protected void paintImpl (Surface surface) {
+				weaponBoard1.paint(surface);
+			}
+		});
 	}
 	
 	private void initPlayer(){
@@ -248,17 +248,13 @@ public class GameWorld {
     	}
     	
     	for(int i = 0;i < 10;i++){
-    		PowerUpCapsule capsule = new PowerUpCapsule(new Point( GameWorld.WORLD_WIDTH/2 + PlayN.random() * GameWorld.WORLD_WIDTH/2, PlayN.random() * GameWorld.WORLD_HEIGHT)); 
+    		PowerUpCapsule capsule = new PowerUpCapsule(new Point( GameWorld.WORLD_WIDTH/2 + PlayN.random() * GameWorld.WORLD_WIDTH/2, PlayN.random() * GameWorld.WORLD_HEIGHT));
     		capsule.addToWorld(this);
     	}
 	}
-	
-	public void destroy(){
-		
-	}
+
 	
 	public void gameOver(){
-		
 		gameScreen.hide();
 	}
 	
@@ -269,7 +265,6 @@ public class GameWorld {
 		collisions.clear();
 		collisionManager = new CollisionManager();
 		weaponSel1.setWeaponCoins(0);
-		
 	}
 
 	private void removeDeadActors(){

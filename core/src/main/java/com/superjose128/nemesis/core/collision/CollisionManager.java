@@ -1,13 +1,12 @@
 package com.superjose128.nemesis.core.collision;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Vector;
-
 import org.jbox2d.dynamics.World;
 import org.jbox2d.pooling.IWorldPool;
 import org.jbox2d.pooling.normal.DefaultWorldPool;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Processes collition detection grouping collideable objects by type.

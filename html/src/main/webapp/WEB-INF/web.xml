@@ -6,5 +6,4 @@
          http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <!-- Add <servlet> tags for each servlet here. -->
   <!-- Add <servlet-mapping> tags for each <servlet> here. -->
-   
 </web-app>

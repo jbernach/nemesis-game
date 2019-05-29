@@ -1,20 +1,18 @@
 package com.superjose128.nemesis.core.actor;
 
-import static playn.core.PlayN.*;
-
+import com.superjose128.nemesis.core.Controllable;
+import com.superjose128.nemesis.core.GameWorld;
+import com.superjose128.nemesis.core.collision.Collideable;
+import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
-
 import playn.core.GroupLayer;
 import playn.core.util.Clock;
 import pythagoras.f.MathUtil;
 import pythagoras.f.Point;
 import pythagoras.f.Vector;
 
-import com.superjose128.nemesis.core.Controllable;
-import com.superjose128.nemesis.core.GameWorld;
-import com.superjose128.nemesis.core.collision.Collideable;
-import com.superjose128.nemesis.core.sprites.AnimatedSprite;
+import static playn.core.PlayN.*;
 
 /**
  * An actor inside the game (player, enemy, bullet, etc).

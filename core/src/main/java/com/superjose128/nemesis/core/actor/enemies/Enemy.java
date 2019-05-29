@@ -1,15 +1,14 @@
 package com.superjose128.nemesis.core.actor.enemies;
 
-import static playn.core.PlayN.assets;
-import playn.core.Image;
-import tripleplay.sound.Playable;
-
 import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
 import com.superjose128.nemesis.core.actor.Explosion;
-import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
+import playn.core.Image;
+import tripleplay.sound.Playable;
+
+import static playn.core.PlayN.assets;
 
 public abstract class Enemy extends DestroyWhenDissapearActor {
 	protected int score = 100;

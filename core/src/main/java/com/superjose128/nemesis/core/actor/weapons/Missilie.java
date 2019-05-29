@@ -1,18 +1,16 @@
 package com.superjose128.nemesis.core.actor.weapons;
 
-import static playn.core.PlayN.assets;
-
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.collision.shapes.Shape;
-
-import playn.core.Image;
-import pythagoras.f.Point;
-
 import com.superjose128.nemesis.core.actor.Actor;
 import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
 import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.Shape;
+import playn.core.Image;
+import pythagoras.f.Point;
+
+import static playn.core.PlayN.assets;
 
 public class Missilie extends DestroyWhenDissapearActor {
 	private final PolygonShape shape = new PolygonShape();

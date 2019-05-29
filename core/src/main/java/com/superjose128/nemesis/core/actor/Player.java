@@ -1,19 +1,16 @@
 package com.superjose128.nemesis.core.actor;
 
-import java.util.HashMap;
-
-import org.jbox2d.collision.shapes.Shape;
-
 import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.powerup.PowerUp;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
-
-import playn.core.PlayN;
+import org.jbox2d.collision.shapes.Shape;
 import playn.core.util.Clock;
 import pythagoras.f.Point;
 import react.Signal;
+
+import java.util.HashMap;
 
 /**
  * Player.

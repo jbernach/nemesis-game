@@ -1,17 +1,15 @@
 package com.superjose128.nemesis.core.powerup;
 
-import static playn.core.PlayN.assets;
-
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.collision.shapes.Shape;
-
-import playn.core.Image;
-import pythagoras.f.Point;
-
 import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
 import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.Shape;
+import playn.core.Image;
+import pythagoras.f.Point;
+
+import static playn.core.PlayN.assets;
 
 public class PowerUpCapsule extends DestroyWhenDissapearActor {
 	private static final PolygonShape shape = new PolygonShape();

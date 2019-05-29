@@ -1,10 +1,11 @@
 package com.superjose128.nemesis.core.sprites;
 
-import static playn.core.PlayN.*;
 import playn.core.Image;
 import playn.core.ImageLayer;
-import playn.core.PlayN;
 import playn.core.util.Clock;
+
+import static playn.core.PlayN.*;
+import static playn.core.PlayN.graphics;
 
 public class AnimatedSprite {
 	private final Image.Region tile;

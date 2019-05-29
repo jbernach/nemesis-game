@@ -1,14 +1,10 @@
 package com.superjose128.nemesis.core.powerup;
 
-import static playn.core.PlayN.graphics;
 import playn.core.Canvas;
-import playn.core.CanvasImage;
 import playn.core.Surface;
-import playn.core.util.Clock;
 import tripleplay.util.Colors;
 
 public class WeaponBoardSlot {
-
 	protected WeaponBoard board;
 	private PowerUp powerup;
 	private boolean current = false;
@@ -44,7 +40,7 @@ public class WeaponBoardSlot {
 		this.disabled = disabled;
 	}
 	
-	public void paint(Clock clock) {
+	public void paint(Surface surface) {
 		if(board == null) return;
 		
 		float margin = board.getChooserHMargin();
@@ -53,10 +49,8 @@ public class WeaponBoardSlot {
 		
 		float x = col*w + margin;
 		float y = row*h;
-		
-		Surface surface = board.surfaceImg.surface();
-		CanvasImage buffer = graphics().createImage(w, h);
-		Canvas canvas = buffer.canvas();
+
+		Canvas canvas = board.plat().graphics().createCanvas(w, h);
 		/*canvas.setFillColor(Colors.BLACK);
 		canvas.fillRect(0, 0, w, h);*/
 		
@@ -82,7 +76,7 @@ public class WeaponBoardSlot {
 			}
 		}
 							
-		surface.drawImage(buffer, x, y);			
+		surface.draw(canvas.snapshot().tile(), x, y);
 	}
 
 	public PowerUp getPowerup() {

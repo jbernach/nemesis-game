@@ -1,13 +1,12 @@
 package com.superjose128.nemesis.core.powerup;
 
+import com.superjose128.nemesis.core.NemesisGame;
+import com.superjose128.nemesis.core.actor.weapons.BasicBullet;
 import pythagoras.f.Point;
 import tripleplay.sound.Clip;
 
-import com.superjose128.nemesis.core.NemesisGame;
-import com.superjose128.nemesis.core.actor.weapons.BasicBullet;
-
 public class DoublePowerUp extends PowerUp {
-	final static private Clip fireSound = (Clip)NemesisGame.soundsFx.getSound("normalFire");
+	final static private Clip fireSound = (Clip) NemesisGame.soundsFx.getSound("normalFire");
 	private final static int MAX_BULLETS =1;
 	private static int liveBullets = 0;
 	

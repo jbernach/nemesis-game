@@ -1,21 +1,15 @@
 package com.superjose128.nemesis.core.powerup;
 
-import java.util.ArrayList;
-
-import static playn.core.PlayN.*;
-import playn.core.Canvas;
-import playn.core.CanvasImage;
-import playn.core.Font;
-import playn.core.Surface;
-import playn.core.SurfaceImage;
-import playn.core.TextFormat;
-import playn.core.TextLayout;
-import playn.core.util.Clock;
+import playn.core.*;
 import tripleplay.util.Colors;
 
+import java.util.ArrayList;
+
+
 public class WeaponBoard {
-	private Font font = graphics().createFont("Nemesis", playn.core.Font.Style.PLAIN, 28);
-	private TextFormat textFormat = new TextFormat(font,false);
+	private final Platform plat;
+	private final Font font;
+	private final TextFormat textFormat;
 	
 	private ArrayList<WeaponBoardSlot> slots = new ArrayList<WeaponBoardSlot>();
 	private int currentSlotIndex = -1; // -1 means none selected
@@ -28,22 +22,18 @@ public class WeaponBoard {
 	
 	private int rows = 1;
 	private int maxColsRow = 1;
-	
-	public final SurfaceImage surfaceImg;
-	
-	public WeaponBoard(float width, float height, int maxColsPerRow){		
+
+	public WeaponBoard(Platform platform, float width, float height, int maxColsPerRow) {
+		this.plat = platform;
 		this.setMaxColsRow(maxColsPerRow);
 		this.width = width;
 		this.height = height;
-		surfaceImg = graphics().createSurface(width, height);
-	}
-	
-	public void update(int delta) {
-		
+		this.font =  new Font("Nemesis", Font.Style.PLAIN, 28);
+		this.textFormat = new TextFormat(font,false);
 	}
 
-	public void paint(Clock clock) {
-		paintLivesAndScore(clock);
+	public void paint(Surface surface) {
+		paintLivesAndScore(surface);
 		
 		this.rows = Math.max(1,(int)Math.ceil(slots.size()/(float)getMaxColsRow()));
 		
@@ -58,15 +48,10 @@ public class WeaponBoard {
 			WeaponBoardSlot ws = (WeaponBoardSlot)slot;
 			ws.row = r;
 			ws.col = c;
-			ws.paint(clock);
+			ws.paint(surface);
 		}
 		
-		paintCurrentSlot(clock);
-	}
-	
-	public void setSize(float w, float h){
-		width = w;
-		height = h;
+		paintCurrentSlot(surface);
 	}
 	
 	public float getWidth(){
@@ -144,7 +129,7 @@ public class WeaponBoard {
 			WeaponBoardSlot ws = (WeaponBoardSlot)arr[i];
 			
 			if(ws.getName().equalsIgnoreCase(value.getName())){
-				log().debug("level"+value.getLevel() + " max:"+value.getMaxLevels());
+				plat.log().debug("level"+value.getLevel() + " max:"+value.getMaxLevels());
 				if(value.getLevel() == value.getMaxLevels()){
 					ws.setDisabled(true);
 				}
@@ -161,16 +146,14 @@ public class WeaponBoard {
 		}
 	}
 	
-	private void paintCurrentSlot(Clock clock) {
+	private void paintCurrentSlot(Surface surface) {
 		float wAvail = getWidth() - getChooserWidth(); 
 		float w = wAvail/3;
 		float h = getHeight()/2;
 		float offX = getWidth() - w - 40;//getChooserWidth() + (wAvail - w)/2;
 		float offY = 0;
-		
-		Surface surface = surfaceImg.surface();
-		CanvasImage buffer = graphics().createImage(w, h);
-		Canvas canvas = buffer.canvas();
+
+		Canvas canvas = plat.graphics().createCanvas(w, h);
 	
 		/*canvas.setFillColor(Colors.BLACK);
 		canvas.fillRect(0, 0, w, h);*/
@@ -185,8 +168,8 @@ public class WeaponBoard {
 			canvas.fillRect(5, 5, w-10, h-10);
 			
 			canvas.setFillColor(Colors.YELLOW);
-			TextLayout textLayout = graphics().layoutText("ENABLE", textFormat);
-			canvas.fillText(textLayout, (w - textLayout.width())/2, 8);
+			TextLayout textLayout = plat.graphics().layoutText("ENABLE", textFormat);
+			canvas.fillText(textLayout, (w - textLayout.size.width())/2, 8);
 						
 			canvas.setStrokeWidth(2);
 			canvas.drawLine(10, 10, 35, 10);
@@ -208,33 +191,30 @@ public class WeaponBoard {
 			canvas.drawLine(5, h-5, w-5, h-5);
 			
 			canvas.setFillColor(Colors.BLUE);
-			TextLayout textLayout = graphics().layoutText(slot.getName(), textFormat);
-			canvas.fillText(textLayout, (w - textLayout.width())/2, 8);			
+			TextLayout textLayout = plat.graphics().layoutText(slot.getName(), textFormat);
+			canvas.fillText(textLayout, (w - textLayout.size.width())/2, 8);
 			
 		}
 							
-		surface.drawImage(buffer, offX, offY);			
-		
+		surface.draw(canvas.snapshot().tile(), offX, offY);
 	}
 	
-	private void paintLivesAndScore(Clock clock) { 
+	private void paintLivesAndScore(Surface surface) {
 		float w = getWidth();
 		float h = getHeight();
-		
-		Surface surface = surfaceImg.surface();
-		CanvasImage buffer = graphics().createImage(w, h);
-		Canvas canvas = buffer.canvas();
+
+		Canvas canvas = plat.graphics().createCanvas(w, h);
 	
 		canvas.setFillColor(Colors.BLACK);
 		canvas.fillRect(0, 0, w, h);
 			
 		canvas.setFillColor(Colors.WHITE);
-		TextLayout textLayout = graphics().layoutText("" + this.getLives() + " LIVES", textFormat);
+		TextLayout textLayout = plat.graphics().layoutText("" + this.getLives() + " LIVES", textFormat);
 		canvas.fillText(textLayout, getChooserHMargin(), getChooserHeight() + 8);
-		textLayout = graphics().layoutText("" + this.getScore(), textFormat);
+		textLayout = plat.graphics().layoutText("" + this.getScore(), textFormat);
 		canvas.fillText(textLayout, getChooserHMargin() + getChooserWidth()/3, getChooserHeight() + 8);
 							
-		surface.drawImage(buffer, 0, 0);
+		surface.draw(canvas.snapshot().tile(), 0, 0);
 	}
 	
 
@@ -252,5 +232,9 @@ public class WeaponBoard {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public Platform plat() {
+		return plat;
 	}
 }

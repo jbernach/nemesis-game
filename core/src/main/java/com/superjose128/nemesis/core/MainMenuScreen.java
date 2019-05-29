@@ -1,34 +1,19 @@
 package com.superjose128.nemesis.core;
 
-import static playn.core.PlayN.*;
-import playn.core.Canvas;
-import playn.core.CanvasImage;
-import playn.core.Font;
-import playn.core.Image;
-import playn.core.ImageLayer;
-import playn.core.Keyboard;
-import playn.core.PlayN;
-import playn.core.Pointer;
-import playn.core.Surface;
-import playn.core.SurfaceImage;
-import playn.core.TextFormat;
-import playn.core.TextLayout;
+import playn.core.*;
 import playn.core.Pointer.Event;
 import playn.core.util.Callback;
+import playn.scene.ImageLayer;
 import tripleplay.anim.AnimBuilder;
 import tripleplay.anim.Animation.Action;
 import tripleplay.game.ScreenStack;
 import tripleplay.game.UIAnimScreen;
-import tripleplay.ui.Label;
-import tripleplay.ui.Root;
-import tripleplay.ui.SimpleStyles;
-import tripleplay.ui.Style;
-import tripleplay.ui.Stylesheet;
-import tripleplay.ui.layout.AxisLayout;
 import tripleplay.util.Colors;
 
+import static playn.core.PlayN.*;
 
-public class MainMenuScreen extends UIAnimScreen {	
+
+public class MainMenuScreen extends ScreenStack.UIScreen {
 
 	private final NemesisGame game;
 	private final ScreenStack stack;
@@ -39,19 +24,25 @@ public class MainMenuScreen extends UIAnimScreen {
 	final private int NUM_LABEL_START_FLASH = 10;
 	
 	public MainMenuScreen(ScreenStack stack, NemesisGame game){
+		super(game.plat);
 		this.game = game;
 		this.stack = stack;
 	}
-	
+
+	@Override
+	public Game game() {
+		return this.game;
+	}
+
 	@Override
 	public void wasAdded() {
 		super.wasAdded();
 		
-		Font font = graphics().createFont("Nemesis", playn.core.Font.Style.PLAIN, 32);
+		Font font = new Font("Nemesis", Font.Style.PLAIN, 32);
 		TextFormat textFormat = new TextFormat(font,false);
-		SurfaceImage surfaceImg = graphics().createSurface(GameWorld.NATIVE_RES_WIDTH, GameWorld.NATIVE_RES_HEIGHT);
+		SurfaceImage surfaceImg = this.game.plat.graphics().createSurface(GameWorld.NATIVE_RES_WIDTH, GameWorld.NATIVE_RES_HEIGHT);
 		Surface surface = surfaceImg.surface();
-		CanvasImage buffer = graphics().createImage(GameWorld.NATIVE_RES_WIDTH, GameWorld.NATIVE_RES_HEIGHT);
+		CanvasImage buffer = this.game.plat.graphics().createImage(GameWorld.NATIVE_RES_WIDTH, GameWorld.NATIVE_RES_HEIGHT);
 		Canvas canvas = buffer.canvas();
 		canvas.setFillColor(Colors.WHITE);
 		TextLayout textLayout = graphics().layoutText("Press to play", textFormat);

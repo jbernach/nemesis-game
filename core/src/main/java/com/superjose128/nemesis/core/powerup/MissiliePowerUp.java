@@ -1,8 +1,7 @@
 package com.superjose128.nemesis.core.powerup;
 
-import pythagoras.f.Point;
-
 import com.superjose128.nemesis.core.actor.weapons.Missilie;
+import pythagoras.f.Point;
 
 public class MissiliePowerUp extends PowerUp {
 	private int MAX_BULLETS = 1;

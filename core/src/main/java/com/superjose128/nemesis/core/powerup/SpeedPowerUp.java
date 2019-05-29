@@ -1,11 +1,11 @@
 package com.superjose128.nemesis.core.powerup;
 
-import static playn.core.PlayN.assets;
+import com.superjose128.nemesis.core.actor.Player;
+import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import playn.core.Image;
 import pythagoras.f.Point;
 
-import com.superjose128.nemesis.core.actor.Player;
-import com.superjose128.nemesis.core.sprites.AnimatedSprite;
+import static playn.core.PlayN.assets;
 
 public class SpeedPowerUp extends PowerUp {
 	private float initialSpeed = 320f;

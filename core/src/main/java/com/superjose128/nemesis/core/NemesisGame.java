@@ -1,47 +1,34 @@
 package com.superjose128.nemesis.core;
 
 import com.superjose128.nemesis.core.sound.GameSounds;
-
-import playn.core.Game;
-import playn.core.PlayN;
-import playn.core.util.Clock;
+import playn.core.Platform;
+import playn.scene.SceneGame;
 import tripleplay.game.ScreenStack;
 
+public class NemesisGame extends SceneGame {
+  public static final int UPDATE_RATE = 33; // 30 fps
 
-public class NemesisGame extends Game.Default {
-	public static final int UPDATE_RATE = 30; // 33 fps
-			
-	protected final Clock.Source clock = new Clock.Source(UPDATE_RATE);
-	protected final ScreenStack screens = new ScreenStack() {		
-		@Override
-		protected void handleError(RuntimeException error) {
-			PlayN.log().error("Error:", error);
-		}
-	};
-	
-	public static final GameSounds soundsFx = new GameSounds();	
+  protected ScreenStack screens;
 
-	public NemesisGame() {
-		super(UPDATE_RATE);
-	}
+  public static final GameSounds soundsFx = new GameSounds();
 
-	@Override
-	public void init() {						
-		screens.push(new LogoScreen(screens,this));
-	}
+  public NemesisGame (Platform plat) {
+    super(plat, UPDATE_RATE); // update our "simulation" 33ms (30 times per second)
 
-	@Override
-	public void update(int delta) {
-		clock.update(delta);
-		screens.update(delta);
-		soundsFx.getSoundBoard().update(delta);
-	}
+     this.screens = new ScreenStack(this, rootLayer) {
+      @Override
+      protected void handleError(RuntimeException error) {
+        this._game.plat.log().error("Error:", error);
+      }
+    };
 
-	@Override
-	public void paint(float alpha) {
-		clock.paint(alpha);
-		screens.paint(clock);
-	}
+    // create and add background image layer
+    /*Image bgImage = plat.assets().getImage("images/bg.png");
+    ImageLayer bgLayer = new ImageLayer(bgImage);
+    // scale the background to fill the screen
+    bgLayer.setSize(plat.graphics().viewSize);
+    rootLayer.add(bgLayer);*/
+  }
 
-	
+
 }

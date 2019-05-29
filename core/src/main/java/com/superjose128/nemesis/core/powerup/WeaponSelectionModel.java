@@ -1,12 +1,10 @@
 package com.superjose128.nemesis.core.powerup;
 
-import java.util.Vector;
-
-import playn.core.PlayN;
-import tripleplay.sound.Clip;
-
 import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.Player;
+import tripleplay.sound.Clip;
+
+import java.util.Vector;
 
 public class WeaponSelectionModel {
 	private Player player;
@@ -14,8 +12,8 @@ public class WeaponSelectionModel {
 	private int weaponCoins = 0; // Number of capsules collected (to get weapons)
 	private Vector<PowerUp> availablePowerUps = new Vector<PowerUp>();
 	
-	final static private Clip powerCoinUpSound = (Clip)NemesisGame.soundsFx.getSound("powerCoin");
-	final static private Clip powerArmSound = (Clip)NemesisGame.soundsFx.getSound("powerArm");
+	final static private Clip powerCoinUpSound = (Clip) NemesisGame.soundsFx.getSound("powerCoin");
+	final static private Clip powerArmSound = (Clip) NemesisGame.soundsFx.getSound("powerArm");
 	
 	
 	public WeaponSelectionModel(Player player, WeaponBoard weaponBoard){

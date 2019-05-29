@@ -1,10 +1,10 @@
 package com.superjose128.nemesis.core.sound;
 
-import java.util.HashMap;
-
 import tripleplay.sound.Clip;
 import tripleplay.sound.Playable;
 import tripleplay.sound.SoundBoard;
+
+import java.util.HashMap;
 
 public class GameSounds {
 	private final SoundBoard sb;

@@ -1,15 +1,11 @@
 package com.superjose128.nemesis.core.actor.enemies;
 
-import static playn.core.PlayN.assets;
-
+import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.Shape;
-
 import playn.core.Image;
 
-import com.superjose128.nemesis.core.collision.Collideable;
-import com.superjose128.nemesis.core.collision.CollideableTypes;
-import com.superjose128.nemesis.core.sprites.AnimatedSprite;
+import static playn.core.PlayN.assets;
 
 public class Barrel extends Enemy {
 private final PolygonShape shape = new PolygonShape();
