@@ -1,10 +1,10 @@
 package com.superjose128.nemesis.core;
 
 import com.superjose128.nemesis.core.powerup.WeaponSelectionModel;
-import playn.scene.Touch;
+import playn.scene.Pointer;
 import pythagoras.f.Point;
 
-public class TouchDirGameControl extends Touch.Listener {
+public class TouchDirGameControl extends Pointer.Listener {
 	private Controllable player;
 	private WeaponSelectionModel selectionModel;
 	
@@ -27,7 +27,7 @@ public class TouchDirGameControl extends Touch.Listener {
 	}
 
 	@Override
-	public void onStart(Touch.Interaction interaction) {
+	public void onStart(Pointer.Interaction interaction) {
 		switch(mode){
 			case MODE_DIR:
 				prev.x = interaction.x();
@@ -45,7 +45,7 @@ public class TouchDirGameControl extends Touch.Listener {
 	}
 
 	@Override
-	public void onMove(Touch.Interaction interaction) {
+	public void onDrag(Pointer.Interaction interaction) {
 		switch(mode){
 			case MODE_DIR:
 				Point current = new Point(interaction.x(),interaction.y());
@@ -80,7 +80,7 @@ public class TouchDirGameControl extends Touch.Listener {
 	}
 
 	@Override
-	public void onEnd(Touch.Interaction interaction) {
+	public void onEnd(Pointer.Interaction interaction) {
 		if(mode == MODE_DIR){
 			player.stopHorizontal();
 			player.stopVertical();
@@ -88,7 +88,7 @@ public class TouchDirGameControl extends Touch.Listener {
 	}
 
 	@Override
-	public void onCancel(Touch.Interaction interaction) {
+	public void onCancel(Pointer.Interaction interaction) {
 		if(mode == MODE_DIR){
 			player.stopHorizontal();
 			player.stopVertical();

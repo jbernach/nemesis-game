@@ -1,8 +1,14 @@
 package com.superjose128.nemesis.core;
 
-import playn.core.*;
-import playn.core.Pointer.Event;
+import playn.core.Canvas;
+import playn.core.Font;
+import playn.core.Game;
+import playn.core.Image;
+import playn.core.Keyboard;
+import playn.core.TextFormat;
+import playn.core.TextLayout;
 import playn.scene.ImageLayer;
+import playn.scene.Pointer;
 import tripleplay.anim.AnimBuilder;
 import tripleplay.anim.Animation.Action;
 import tripleplay.game.ScreenStack;
@@ -90,24 +96,19 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
     }
 
     private void captureKeyboardAndPointer() {
-        pointer().setListener(new Pointer.Adapter() {
+
+        this.layer.events().connect(new Pointer.Listener() {
             @Override
-            public void onPointerStart(Event event) {
+            public void onStart(Pointer.Interaction interaction) {
                 flashStart();
             }
         });
 
-        keyboard().setListener(new Keyboard.Adapter() {
-            @Override
-            public void onKeyDown(Keyboard.Event event) {
-                flashStart();
-            }
-        });
-
+        this.game.plat.input().keyboardEvents.connect(event -> flashStart());
     }
 
     private void flashStart() {
-        AnimBuilder anim = iface.animator().repeat(logoLayer);
+        AnimBuilder anim = iface.anim.repeat(logoLayer);
         Action action = anim.delay(100).then().action(new Runnable() {
             int cycle = 0;
             boolean started = false;
@@ -127,7 +128,7 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
                     started = true;
                     startNewGame();
                 } else {
-                    iface.animator().clear();
+                    iface.anim.clear();
                 }
             }
         });

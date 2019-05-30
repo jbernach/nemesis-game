@@ -43,7 +43,7 @@ public class GameWorld {
     private final TouchDirGameControl[] touchControls = new TouchDirGameControl[3];
     private final Connection[] touchConnections = new Connection[3];
 
-    private final GroupLayer controlPadLayer = new GroupLayer(NATIVE_RES_WIDTH, NATIVE_RES_WIDTH)
+    private final GroupLayer controlPadLayer = new GroupLayer(NATIVE_RES_WIDTH, NATIVE_RES_WIDTH);
     private final Layer[] controlDirLayers = new Layer[3];
 
     private final GroupLayer backgroundLayer = new GroupLayer(NATIVE_RES_WIDTH, NATIVE_RES_WIDTH);
@@ -114,11 +114,11 @@ public class GameWorld {
     }
 
     public void paint(Clock clock) {
-        weaponBoard1.paint(clock);
-
         for (Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
             it.next().paint(clock);
         }
+
+        ((NemesisGame)this.gameScreen.game()).update.emit(clock);
     }
 
     private void init() {
@@ -145,10 +145,9 @@ public class GameWorld {
 
             for (int i = 0; i < touchControls.length; i++) {
                 touchControls[i] = new TouchDirGameControl(i, this.getPlayer1(), this.getWeaponSel1());
-                touchConnections[i] = controlDirLayers[i].addListener((Touch.LayerListener) touchControls[i]);
+                touchConnections[i] = controlDirLayers[i].events().connect(touchControls[i]);
             }
         }
-
     }
 
     private void createScreenPad() {
@@ -228,12 +227,12 @@ public class GameWorld {
         clearLevel();
         player1.addToWorld(this);
         // TODO: load level
-        SurfaceImage baseBackground = graphics().createSurface(NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
-        Surface surfaceB = baseBackground.surface();
+        Canvas baseBackground = this.plat.graphics().createCanvas(NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
+
         //surfaceB.setFillColor(0xFF2B76FF);
-        surfaceB.setFillColor(0xFF000000);
-        surfaceB.fillRect(0, 0, NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
-        backgroundLayer.add(graphics().createImageLayer(baseBackground));
+        baseBackground .setFillColor(0xFF000000);
+        baseBackground .fillRect(0, 0, NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
+        backgroundLayer.add(new ImageLayer(baseBackground.snapshot()));
 
         createTestStuff();
 
@@ -242,14 +241,14 @@ public class GameWorld {
     private void createTestStuff() {
         for (int i = 0; i < 20; i++) {
             Enemy enemy = new Barrel();
-            enemy.setPos(GameWorld.WORLD_WIDTH / 2 + PlayN.random() * GameWorld.WORLD_WIDTH / 2, PlayN.random() * GameWorld.WORLD_HEIGHT);
-            enemy.setSpeed(100 * PlayN.random());
+            enemy.setPos(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT);
+            enemy.setSpeed(100 * (float)Math.random());
             enemy.moveLeft();
             enemy.addToWorld(this);
         }
 
         for (int i = 0; i < 10; i++) {
-            PowerUpCapsule capsule = new PowerUpCapsule(new Point(GameWorld.WORLD_WIDTH / 2 + PlayN.random() * GameWorld.WORLD_WIDTH / 2, PlayN.random() * GameWorld.WORLD_HEIGHT));
+            PowerUpCapsule capsule = new PowerUpCapsule(new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
             capsule.addToWorld(this);
         }
     }
@@ -260,8 +259,8 @@ public class GameWorld {
     }
 
     private void clearLevel() {
-        backgroundLayer.destroyAll();
-        actorLayer.destroyAll();
+        backgroundLayer.disposeAll();
+        actorLayer.disposeAll();
         actors.clear();
         collisions.clear();
         collisionManager = new CollisionManager();
