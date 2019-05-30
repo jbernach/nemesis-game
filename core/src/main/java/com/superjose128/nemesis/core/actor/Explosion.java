@@ -3,7 +3,7 @@ package com.superjose128.nemesis.core.actor;
 import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import org.jbox2d.collision.shapes.Shape;
-import playn.core.util.Clock;
+import playn.core.Clock;
 import pythagoras.f.Point;
 import tripleplay.sound.Playable;
 
@@ -16,7 +16,6 @@ public abstract class Explosion extends DieOnTimeActor {
 		this.vel.y = 0f;
 		this.vel.x = 0f;
 		this.setLifeTime(lifeTime);
-		
 	}
 	
 	public abstract Playable getSound();

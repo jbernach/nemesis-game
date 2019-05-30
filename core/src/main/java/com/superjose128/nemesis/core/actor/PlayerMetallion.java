@@ -10,9 +10,6 @@ import org.jbox2d.collision.shapes.Shape;
 import playn.core.Image;
 import tripleplay.sound.Playable;
 
-import static playn.core.PlayN.*;
-import static playn.core.PlayN.assets;
-
 
 public class PlayerMetallion extends Player {
 	final static int ROW_NORMAL = 0;
@@ -69,10 +66,8 @@ public class PlayerMetallion extends Player {
 
 	@Override
 	public AnimatedSprite initializeSprite() {
-		
 		AnimatedSprite sp = new AnimatedSprite(imgSprite, 92, 64, 2, 600);
 		sp.loop = false;
-		
 		return sp;
 	}
 
@@ -101,6 +96,4 @@ public class PlayerMetallion extends Player {
 		};
 		explosion.addToWorld(getWorld());
 	}
-
-	
 }

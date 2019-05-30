@@ -1,5 +1,8 @@
 package com.superjose128.nemesis.core.sound;
 
+import playn.core.Clock;
+import playn.core.Platform;
+import react.Signal;
 import tripleplay.sound.Clip;
 import tripleplay.sound.Playable;
 import tripleplay.sound.SoundBoard;
@@ -10,8 +13,8 @@ public class GameSounds {
 	private final SoundBoard sb;
 	public final HashMap<String, Playable> sounds = new HashMap<String, Playable>();
 	
-	public GameSounds(){
-		this.sb = new SoundBoard();
+	public GameSounds(Platform platform, Signal<Clock> paintclock){
+		this.sb = new SoundBoard(platform, paintclock);
 		this.sb.volume.update(0.5f); // Medio volumen
 	}
 	

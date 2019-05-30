@@ -6,7 +6,7 @@ import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.powerup.PowerUp;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.Shape;
-import playn.core.util.Clock;
+import playn.core.Clock;
 import pythagoras.f.Point;
 import react.Signal;
 

@@ -11,18 +11,16 @@ public class LogoScreen extends ScreenStack.UIScreen {
     public static final int DURATION = 2500; // 2,5 sec
 
     private final NemesisGame game;
-    private final ScreenStack stack;
 
     private final Signal<Boolean> _completeSignal = new Signal<Boolean>();
     private ImageLayer _logo;
 
-    public LogoScreen(ScreenStack stack, NemesisGame game) {
+    public LogoScreen(NemesisGame game) {
         super(game.plat);
-        this.stack = stack;
         this.game = game;
         this._completeSignal.connect(new Slot<Boolean>() {
             public void onEmit(Boolean event) {
-                LogoScreen.this.stack.push(new MainMenuScreen(LogoScreen.this.stack, LogoScreen.this.game));
+                game.screens.push(new MainMenuScreen(game));
             }
         });
     }
@@ -40,7 +38,7 @@ public class LogoScreen extends ScreenStack.UIScreen {
         _logo = new ImageLayer(imageLogo);
 
         // Preload of game sounds
-        NemesisGame.soundsFx.loadAllSounds();
+        this.game.soundsFx.loadAllSounds();
 
         imageLogo.state.onComplete(result -> {
             float anchoImagenDeseado = this.size().width() / 4f;

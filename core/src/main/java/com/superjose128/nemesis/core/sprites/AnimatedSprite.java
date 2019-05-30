@@ -1,14 +1,11 @@
 package com.superjose128.nemesis.core.sprites;
 
+import playn.core.Clock;
 import playn.core.Image;
-import playn.core.ImageLayer;
-import playn.core.util.Clock;
-
-import static playn.core.PlayN.*;
-import static playn.core.PlayN.graphics;
+import playn.scene.ImageLayer;
 
 public class AnimatedSprite {
-	private final Image.Region tile;
+	private final Image image;
 	private final int tilesPerRow;
 
 	private float msPerFrame;
@@ -29,7 +26,7 @@ public class AnimatedSprite {
 	 * @param msPerFrame Número de ms que deben transcurrir entre cada frame de animación.
 	 */
 	public AnimatedSprite(Image image, int tileWid, int tileHei, int tilesPerRow, float msPerFrame) {
-		this.tile = image.subImage(0, 0, tileWid, tileHei);
+		this.image = image;
 		this.tilesPerRow = tilesPerRow;
 		this.frame = 0;
 		this.rowY = 0;
@@ -37,8 +34,8 @@ public class AnimatedSprite {
 		this.nextFrame = msPerFrame;
 		this.width = tileWid;
 		this.height = tileHei;
-		this.layer = graphics().createImageLayer(tile);
-		layer.setOrigin(tileWid / 2, tileHei / 2);
+		this.layer =  new ImageLayer();
+		layer.setOrigin(this.width / 2, this.height/ 2);
 		updateImage();
 	}
 
@@ -58,7 +55,7 @@ public class AnimatedSprite {
 	 */
 	public void paint(Clock clock) {
 		if(msPerFrame > 0){
-			nextFrame -= clock.dt();
+			nextFrame -= clock.dt;
 			int f = frame;
 			while (nextFrame < 0) {
 				nextFrame += msPerFrame;
@@ -78,7 +75,7 @@ public class AnimatedSprite {
 	}
 
 	private void updateImage() {
-		tile.setBounds(frame * width, rowY, width, height);
+		this.layer.setSource(this.image.region(frame * width, rowY, width, height));
 	}
 
 	public float getMsPerFrame() {
