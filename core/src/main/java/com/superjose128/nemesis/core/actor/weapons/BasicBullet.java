@@ -1,5 +1,6 @@
 package com.superjose128.nemesis.core.actor.weapons;
 
+import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.Actor;
 import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
 import com.superjose128.nemesis.core.collision.Collideable;
@@ -10,13 +11,11 @@ import org.jbox2d.collision.shapes.Shape;
 import playn.core.Image;
 import pythagoras.f.Point;
 
-import static playn.core.PlayN.assets;
-
 public class BasicBullet extends DestroyWhenDissapearActor {
 	private final PolygonShape shape = new PolygonShape();
 	
-	public BasicBullet(Point pos){
-		super();
+	public BasicBullet(NemesisGame game, Point pos){
+		super(game);
 		this.setPos(pos.x, pos.y);
 		this.vel.y = 0f;
 		this.vel.x = 1000f;
@@ -38,7 +37,7 @@ public class BasicBullet extends DestroyWhenDissapearActor {
 
 	@Override
 	public AnimatedSprite initializeSprite() {
-		Image imgSprite = assets().getImage("images/sprites/bullet.png");
+		Image imgSprite = game.plat.assets().getImage("images/sprites/bullet.png");
 		return new AnimatedSprite(imgSprite, 24, 8, 1, 0);
 	}
 	
@@ -52,17 +51,5 @@ public class BasicBullet extends DestroyWhenDissapearActor {
 				break;
 			default: break;
 		}
-	}
-
-
-	public void die(){
-		destroy();
-	}
-	
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-		super.destroy();
-		onDeath();
 	}
 }

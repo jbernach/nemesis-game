@@ -1,6 +1,7 @@
 package com.superjose128.nemesis.core.actor;
 
 import com.superjose128.nemesis.core.GameWorld;
+import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.powerup.PowerUp;
@@ -8,7 +9,6 @@ import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.Shape;
 import playn.core.Clock;
 import pythagoras.f.Point;
-import react.Signal;
 
 import java.util.HashMap;
 
@@ -23,10 +23,12 @@ public abstract class Player extends Actor {
 	
 	public boolean invulnerable = false; // siiii
 	
-	public Signal<Boolean> alive = new Signal<Boolean>();
-	
 	protected HashMap<String,PowerUp> powerUps = new HashMap<String,PowerUp>();
-	
+
+	public Player(NemesisGame game) {
+		super(game);
+	}
+
 	public boolean hasPowerUp(String name){
 		return (powerUps.get(name) != null);
 	}
@@ -93,35 +95,14 @@ public abstract class Player extends Actor {
 	}
 
 	@Override
-	public void destroy(){
-		super.destroy();
-		
+	public void die(){
 		//remove Powerups
 		PowerUp powerUpsArray[] = this.powerUps.values().toArray(new PowerUp[0]);
 		for(PowerUp poup:powerUpsArray){
 			disarmPowerUp(poup.getName());
 		}
-	}
-	
-	@Override
-	public void onDeath(){
-		notifyDeathToWorld();
-	}
-	
-	void notifyDeathToWorld(){
-		this.alive.emit(new Boolean(false));
-	}
-	
-	@Override
-	public CollideableTypes getType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Shape getShape() {
-		// TODO Auto-generated method stub
-		return null;
+		super.die();
 	}
 
 	@Override
@@ -180,7 +161,6 @@ public abstract class Player extends Actor {
 
 	@Override
 	public void update(int delta) {
-		// TODO Auto-generated method stub
 		super.update(delta);
 		if(pos.x < 0) pos.x = 0;
 		if(pos.x > GameWorld.WORLD_WIDTH) pos.x = GameWorld.WORLD_WIDTH;

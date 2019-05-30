@@ -58,7 +58,6 @@ public class GameWorld {
     private final ArrayList<Actor> actors = new ArrayList<Actor>();
 
     private CollisionManager collisionManager = new CollisionManager();
-    private LinkedList<Collision> collisions = new LinkedList<Collision>();
 
     boolean useScreenPad = false;
 
@@ -85,29 +84,9 @@ public class GameWorld {
             actor.update(delta);
         }
 
-        removeDeadActors();
+        collisionManager.calculateCollisions();
 
-        CollideableTypes[][] collideablePairs;
-        collideablePairs = new CollideableTypes[][]{
-                {CollideableTypes.PLAYER_SHIELD, CollideableTypes.ENEMY_WEAPON},
-                {CollideableTypes.PLAYER_SHIELD, CollideableTypes.ENEMY},
-                {CollideableTypes.PLAYER_WEAPON, CollideableTypes.ENEMY},
-                {CollideableTypes.PLAYER_WEAPON, CollideableTypes.WALL},
-                {CollideableTypes.PLAYER, CollideableTypes.POWERUP_CAPSULE},
-                {CollideableTypes.PLAYER, CollideableTypes.ENEMY_WEAPON},
-                {CollideableTypes.PLAYER, CollideableTypes.ENEMY},
-                {CollideableTypes.PLAYER, CollideableTypes.WALL},
-                {CollideableTypes.ENEMY_WEAPON, CollideableTypes.WALL},
-                {CollideableTypes.ENEMY, CollideableTypes.WALL}
-        };
-
-        for (CollideableTypes[] pair : collideablePairs) {
-            collisionManager.calculateCollisions(pair[0], pair[1], collisions);
-        }
-
-        collisionManager.processCollisions(collisions);
-
-        removeDeadActors();
+        collisionManager.processCollisions();
 
         this.weaponSel1.update(delta); // update score, lives, etc
         //log().debug("actors: " + actors.size());
@@ -118,7 +97,7 @@ public class GameWorld {
             it.next().paint(clock);
         }
 
-        ((NemesisGame)this.gameScreen.game()).update.emit(clock);
+        game().update.emit(clock);
     }
 
     private void init() {
@@ -199,7 +178,7 @@ public class GameWorld {
     private void initPlayer() {
         Player deadPlayer = player1;
 
-        player1 = new PlayerMetallion();
+        player1 = new PlayerMetallion((game()));
         if (deadPlayer != null) {
             player1.setLives(deadPlayer.getLives() - 1);
             player1.setScore(deadPlayer.getScore());
@@ -225,7 +204,7 @@ public class GameWorld {
     public void loadLevel(String level) {
         currentLevel = level;
         clearLevel();
-        player1.addToWorld(this);
+        addActor(player1);
         // TODO: load level
         Canvas baseBackground = this.plat.graphics().createCanvas(NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
 
@@ -240,16 +219,26 @@ public class GameWorld {
 
     private void createTestStuff() {
         for (int i = 0; i < 20; i++) {
-            Enemy enemy = new Barrel();
+            Enemy enemy = new Barrel(game());
             enemy.setPos(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT);
             enemy.setSpeed(100 * (float)Math.random());
             enemy.moveLeft();
-            enemy.addToWorld(this);
+            this.addActor(enemy);
+            enemy.alive.connect(alive -> {
+                if (!alive) {
+                    this.removeActor(enemy);
+                }
+            });
         }
 
         for (int i = 0; i < 10; i++) {
             PowerUpCapsule capsule = new PowerUpCapsule(new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
-            capsule.addToWorld(this);
+            this.addActor(capsule);
+            capsule.alive.connect(alive -> {
+                if (!alive) {
+                    this.removeActor(capsule);
+                }
+            });
         }
     }
 
@@ -262,28 +251,12 @@ public class GameWorld {
         backgroundLayer.disposeAll();
         actorLayer.disposeAll();
         actors.clear();
-        collisions.clear();
         collisionManager = new CollisionManager();
         weaponSel1.setWeaponCoins(0);
     }
 
-    private void removeDeadActors() {
-        Actor[] actorsArray = actors.toArray(new Actor[0]);
-
-        for (Actor actor : actorsArray) {
-            if (!actor.isAlive()) {
-                actors.remove(actor);
-                collisionManager.removeCollideable(actor);
-            }
-        }
-    }
-
     public Player getPlayer1() {
         return player1;
-    }
-
-    public void setPlayer1(Player player) {
-        this.player1 = player;
     }
 
     public GroupLayer getActorLayer() {
@@ -299,7 +272,22 @@ public class GameWorld {
      */
     public void addActor(Actor actor) {
         actors.add(actor);
+        if (actor.getLayer() != null) {
+            getActorLayer().add(actor.getLayer());
+        }
         collisionManager.addCollideable(actor);
+    }
+
+    public void removeActor(Actor actor) {
+        if (actor.getLayer() != null) {
+            this.getActorLayer().remove(actor.getLayer());
+        }
+
+        collisionManager.removeCollideable(actor);
+    }
+
+    public NemesisGame game() {
+        return (NemesisGame)this.gameScreen.game();
     }
 
 }

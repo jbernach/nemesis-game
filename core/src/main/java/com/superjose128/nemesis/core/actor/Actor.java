@@ -2,15 +2,17 @@ package com.superjose128.nemesis.core.actor;
 
 import com.superjose128.nemesis.core.Controllable;
 import com.superjose128.nemesis.core.GameWorld;
+import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 import playn.core.Clock;
-import playn.scene.GroupLayer;
+import playn.scene.Layer;
 import pythagoras.f.MathUtil;
 import pythagoras.f.Point;
 import pythagoras.f.Vector;
+import react.Signal;
 
 /**
  * An actor inside the game (player, enemy, bullet, etc).
@@ -19,7 +21,9 @@ import pythagoras.f.Vector;
  * @author Joselito y Tere
  */
 public abstract class Actor implements Controllable, Collideable {
-    protected boolean alive = true;
+    protected final NemesisGame game;
+    public Signal<Boolean> alive = new Signal<Boolean>();
+    private boolean isAlive = false;
     protected AnimatedSprite sprite; // Actor animated character on screen
     protected Point oldPos = new Point(0f, 0f); // Old position
     protected Point pos = new Point(0f, 0f); // Current position (px world)
@@ -31,48 +35,29 @@ public abstract class Actor implements Controllable, Collideable {
 
     protected final Transform t = new Transform();
 
-    public Actor() {
-        sprite = initializeSprite();
+    public Actor(NemesisGame game) {
+        this.game = game;
+        this.sprite = initializeSprite();
     }
 
     public abstract AnimatedSprite initializeSprite();
 
-    public void addToWorld(GameWorld world) {
+    public Layer getLayer() {
+        if (this.sprite == null) return null;
+
+        return sprite.layer;
+    }
+
+    public void setWorld(GameWorld world) {
         this.world = world;
+        this.isAlive = true;
+        this.alive.emit(true);
 
-        if (sprite != null) {
-            world.getActorLayer().add(sprite.layer);
-        }
-
-        sprite.layer.setTranslation(pos.x, pos.y);
-        this.world.addActor(this);
-    }
-
-    protected void removeLayerFromWorld() {
-        if (world != null) {
-            if (sprite != null) {
-                GroupLayer parent = world.getActorLayer();
-                try {
-                    parent.remove(sprite.layer);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void destroy() {
-        this.setAlive(false);
-        this.removeLayerFromWorld();
     }
 
     public void die() {
-        destroy();
-        this.onDeath();
-    }
-
-    public void onDeath() {
-
+        this.isAlive = false;
+        alive.emit(false);
     }
 
     public void update(int delta) {
@@ -197,11 +182,7 @@ public abstract class Actor implements Controllable, Collideable {
     }
 
     public boolean isAlive() {
-        return alive;
-    }
-
-    protected void setAlive(boolean alive) {
-        this.alive = alive;
+        return isAlive;
     }
 
     @Override

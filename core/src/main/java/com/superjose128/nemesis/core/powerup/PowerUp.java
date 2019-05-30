@@ -2,6 +2,7 @@ package com.superjose128.nemesis.core.powerup;
 
 import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
+import playn.core.Clock;
 import pythagoras.f.Point;
 
 /**

@@ -58,15 +58,15 @@ public class KeyboardGameControl extends Keyboard.KeySlot {
                 break;
             case C:
                 PowerUpCapsule capsule = new PowerUpCapsule(new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
-                capsule.addToWorld(gameWorld);
+                gameWorld.addActor(capsule);
                 break;
             case E:
                 for (int i = 0; i < 20; i++) {
-                    Enemy enemy = new Chiquis();
+                    Enemy enemy = new Chiquis(this.gameWorld.game());
                     enemy.setPos(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT);
                     enemy.setSpeed(100 * (float)Math.random());
                     enemy.moveLeft();
-                    enemy.addToWorld(gameWorld);
+                    gameWorld.addActor(enemy);
                 }
                 break;
             default:

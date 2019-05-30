@@ -5,8 +5,6 @@ import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import playn.core.Image;
 import pythagoras.f.Point;
 
-import static playn.core.PlayN.assets;
-
 public class SpeedPowerUp extends PowerUp {
 	private float initialSpeed = 320f;
 	private float speedInc = 60f;

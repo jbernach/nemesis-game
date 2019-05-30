@@ -8,12 +8,14 @@ import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import playn.core.Image;
 import tripleplay.sound.Playable;
 
-import static playn.core.PlayN.assets;
-
 public abstract class Enemy extends DestroyWhenDissapearActor {
 	protected int score = 100;
-	
-	private static final Image imgExplosionSprite = assets().getImage("images/sprites/explode1.png");
+
+
+	public Enemy(NemesisGame game) {
+		super(game);
+	}
+
 	@Override
 	public CollideableTypes getType() {
 		return CollideableTypes.ENEMY;
@@ -26,7 +28,7 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 		Explosion explosion = new Explosion(this.getPos(),300) {
 			@Override
 			public AnimatedSprite initializeSprite() {
-				
+				Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode1.png");
 				AnimatedSprite sp = new AnimatedSprite(imgExplosionSprite, 64, 64, 8, 50);
 				sp.loop = false;
 
@@ -35,14 +37,13 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 			
 			@Override
 			public Playable getSound() {
-				return NemesisGame.soundsFx.getSound("explode1");
+				return this.game.soundsFx.getSound("explode1");
 			}
-				
 		};
-		explosion.addToWorld(getWorld());
-		
+
+		getWorld().addActor(explosion);
+
 		getWorld().getPlayer1().addScore(this.score);
-		
 	}
 	
 }
