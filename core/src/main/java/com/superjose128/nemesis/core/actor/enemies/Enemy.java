@@ -25,7 +25,7 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 	@Override
 	public void die() {
 		super.die();
-		Explosion explosion = new Explosion(this.getPos(),300) {
+		Explosion explosion = new Explosion(game(), this.getPos(),300) {
 			@Override
 			public AnimatedSprite initializeSprite() {
 				Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode1.png");

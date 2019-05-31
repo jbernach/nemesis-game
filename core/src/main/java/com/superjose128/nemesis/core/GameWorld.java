@@ -230,7 +230,7 @@ public class GameWorld {
         }
 
         for (int i = 0; i < 10; i++) {
-            PowerUpCapsule capsule = new PowerUpCapsule(new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
+            PowerUpCapsule capsule = new PowerUpCapsule(game(), new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
             this.addActor(capsule);
             capsule.alive.connect(alive -> {
                 if (!alive) {

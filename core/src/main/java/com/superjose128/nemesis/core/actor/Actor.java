@@ -185,6 +185,11 @@ public abstract class Actor implements Controllable, Collideable {
         return isAlive;
     }
 
+    @Override
+    public void collisionCallback(Collideable hit) {
+        // NOP
+    }
+
     public NemesisGame game() {
         return this.game;
     }

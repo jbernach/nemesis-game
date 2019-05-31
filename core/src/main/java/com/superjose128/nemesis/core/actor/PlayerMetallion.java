@@ -2,6 +2,7 @@ package com.superjose128.nemesis.core.actor;
 
 import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.NemesisGame;
+import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.powerup.*;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;

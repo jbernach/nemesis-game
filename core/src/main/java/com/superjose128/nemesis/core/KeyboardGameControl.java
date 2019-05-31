@@ -57,7 +57,7 @@ public class KeyboardGameControl extends Keyboard.KeySlot {
                 }
                 break;
             case C:
-                PowerUpCapsule capsule = new PowerUpCapsule(new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
+                PowerUpCapsule capsule = new PowerUpCapsule(gameWorld.game(), new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
                 gameWorld.addActor(capsule);
                 break;
             case E:

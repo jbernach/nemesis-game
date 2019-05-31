@@ -38,9 +38,4 @@ public class PowerUpCapsule extends DestroyWhenDissapearActor {
 		return new AnimatedSprite(imgSprite, 64, 64, 2, 150);
 	}
 
-	@Override
-	public void collisionCallback(Collideable hit) {
-		// TODO Auto-generated method stub
-		
-	}
 }
