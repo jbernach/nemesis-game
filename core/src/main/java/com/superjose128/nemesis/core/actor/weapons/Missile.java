@@ -11,10 +11,10 @@ import org.jbox2d.collision.shapes.Shape;
 import playn.core.Image;
 import pythagoras.f.Point;
 
-public class Missilie extends DestroyWhenDissapearActor {
+public class Missile extends DestroyWhenDissapearActor {
 	private final PolygonShape shape = new PolygonShape();
 	
-	public Missilie(NemesisGame game, Point pos){
+	public Missile(NemesisGame game, Point pos){
 		super(game);
 		this.setPos(pos.x, pos.y);
 		this.vel.y = 300f;

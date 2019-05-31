@@ -1,5 +1,6 @@
-package com.superjose128.nemesis.core.powerup;
+package com.superjose128.nemesis.core.actor.weapons;
 
+import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
 import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
@@ -9,14 +10,11 @@ import org.jbox2d.collision.shapes.Shape;
 import playn.core.Image;
 import pythagoras.f.Point;
 
-import static playn.core.PlayN.assets;
-
 public class PowerUpCapsule extends DestroyWhenDissapearActor {
 	private static final PolygonShape shape = new PolygonShape();
-	private static final Image imgSprite = assets().getImage("images/sprites/capsule_red.png");
-	
-	public PowerUpCapsule(Point pos){
-		super();
+
+	public PowerUpCapsule(NemesisGame game, Point pos){
+		super(game);
 		this.setPos(pos.x, pos.y);
 		this.vel.y = 0f;
 		this.vel.x = -200f;
@@ -36,6 +34,7 @@ public class PowerUpCapsule extends DestroyWhenDissapearActor {
 
 	@Override
 	public AnimatedSprite initializeSprite() {
+		Image imgSprite = this.game.plat.assets().getImage("images/sprites/capsule_red.png");
 		return new AnimatedSprite(imgSprite, 64, 64, 2, 150);
 	}
 

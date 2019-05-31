@@ -185,9 +185,7 @@ public abstract class Actor implements Controllable, Collideable {
         return isAlive;
     }
 
-    @Override
-    public void collisionCallback(Collideable hit) {
-        // TODO Auto-generated method stub
-
+    public NemesisGame game() {
+        return this.game;
     }
 }

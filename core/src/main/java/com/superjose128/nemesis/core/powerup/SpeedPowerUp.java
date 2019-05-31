@@ -14,18 +14,24 @@ public class SpeedPowerUp extends PowerUp {
 	public SpeedPowerUp() {
 		super();
 		this.name = "SPEED";
-		Image imgSprite = assets().getImage("images/sprites/flame.png");
-		this.sprite = new AnimatedSprite(imgSprite, 20, 12, 2, initialBlinkMs);
+
 		this.relativeToActorPos = new Point(-92/2-20+5,-1);
-		
 		this.maxLevels = 9;
 		this.basic = true; 
 	}
 
 	@Override
+	public void onArmed(Player player) {
+		super.onArmed(player);
+		player.setSpeed(initialSpeed);
+
+		Image imgSprite = player.game().plat.assets().getImage("images/sprites/flame.png");
+		this.sprite = new AnimatedSprite(imgSprite, 20, 12, 2, initialBlinkMs);
+	}
+
+	@Override
 	public void onFire() {
 		//NOP
-		
 	}
 
 	@Override
@@ -33,13 +39,4 @@ public class SpeedPowerUp extends PowerUp {
 		this.owner.setSpeed(initialSpeed + (this.level - 1)*speedInc);
 		this.sprite.setMsPerFrame(initialBlinkMs + (this.level - 1)*blinkMsInc);
 	}
-
-	@Override
-	public void onArmed(Player guy) {
-		// TODO Auto-generated method stub
-		super.onArmed(guy);
-		
-		guy.setSpeed(initialSpeed);
-	}
-
 }

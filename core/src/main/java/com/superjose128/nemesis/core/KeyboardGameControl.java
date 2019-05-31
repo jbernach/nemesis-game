@@ -2,7 +2,7 @@ package com.superjose128.nemesis.core;
 
 import com.superjose128.nemesis.core.actor.enemies.Chiquis;
 import com.superjose128.nemesis.core.actor.enemies.Enemy;
-import com.superjose128.nemesis.core.powerup.PowerUpCapsule;
+import com.superjose128.nemesis.core.actor.weapons.PowerUpCapsule;
 import com.superjose128.nemesis.core.powerup.WeaponSelectionModel;
 import playn.core.Key;
 import playn.core.Keyboard;

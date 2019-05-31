@@ -12,33 +12,38 @@ import pythagoras.f.Point;
  *
  */
 public abstract class PowerUp {
+	protected Player owner = null;
+
 	protected String name = "-";
 	protected AnimatedSprite sprite; // graphic appearance
 	protected Point relativeToActorPos = new Point(0,0); // Position of whe sprite (relative to actor center)
 	
 	protected int level = 1;
 	protected int maxLevels = 1;
-	protected Player owner = null;
+
 	protected boolean enabled = true;
+
 	/* Indicates it's an indispensable powerup and can't be disarmed, but disabled */
 	protected boolean basic = false;
+
 	/* No compatible powerups. Wen this powerup is armed, those included in this lists will be disarmed on disabled (if its a basic powerup) */
 	protected String[] excludes = new String[0]; 
 		
 	private boolean spriteOnLayer = false; // indicates if the sprite has been attached to the world's actor layer
+
 	protected PowerUp(){
 	}
 	
 	/**
 	 * Fired when the actor is armed with this powerup. 
-	 * @param guy
+	 * @param player
 	 */
-	public void onArmed(Player guy){
-		this.setOwner(guy);
+	public void onArmed(Player player){
+		this.setOwner(player);
 		
 		// disable or disarm the excluded powerups
-		disarmExcluded(guy);
-		disableBasicExcluded(guy);
+		disarmExcluded(player);
+		disableBasicExcluded(player);
 	}
 
 	/**

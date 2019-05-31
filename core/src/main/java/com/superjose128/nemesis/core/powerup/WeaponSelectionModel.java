@@ -12,13 +12,16 @@ public class WeaponSelectionModel {
 	private int weaponCoins = 0; // Number of capsules collected (to get weapons)
 	private Vector<PowerUp> availablePowerUps = new Vector<PowerUp>();
 	
-	final static private Clip powerCoinUpSound = (Clip) NemesisGame.soundsFx.getSound("powerCoin");
-	final static private Clip powerArmSound = (Clip) NemesisGame.soundsFx.getSound("powerArm");
+	final private Clip powerCoinUpSound;
+	final private Clip powerArmSound;
 	
 	
 	public WeaponSelectionModel(Player player, WeaponBoard weaponBoard){
 		this.player = player;
 		this.weaponBoard = weaponBoard;
+
+		powerCoinUpSound = (Clip) player.game().soundsFx.getSound("powerCoin");
+		powerArmSound = (Clip) player.game().soundsFx.getSound("powerArm");
 	}
 	
 	public void addSelectablePowerUp(PowerUp powerUp){

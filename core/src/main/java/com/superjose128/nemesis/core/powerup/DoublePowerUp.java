@@ -1,14 +1,17 @@
 package com.superjose128.nemesis.core.powerup;
 
 import com.superjose128.nemesis.core.NemesisGame;
+import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.actor.weapons.BasicBullet;
 import pythagoras.f.Point;
 import tripleplay.sound.Clip;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DoublePowerUp extends PowerUp {
-	final static private Clip fireSound = (Clip) NemesisGame.soundsFx.getSound("normalFire");
-	private final static int MAX_BULLETS =1;
-	private static int liveBullets = 0;
+	private Clip fireSound;
+	private final static int MAX_BULLETS = 1;
+	private AtomicInteger liveBullets = new AtomicInteger(0);
 	
 	public DoublePowerUp(){
 		super();
@@ -18,14 +21,20 @@ public class DoublePowerUp extends PowerUp {
 		this.basic = false;
 		this.excludes = new String[]{"FIRE","LASER"};
 	}
-	
+
+	@Override
+	public void onArmed(Player player) {
+		super.onArmed(player);
+		fireSound = (Clip) player.game().soundsFx.getSound("normalFire");
+	}
+
 	@Override
 	public void onFire() {
-		if(liveBullets >= MAX_BULLETS){
+		if(liveBullets.intValue() >= MAX_BULLETS){
 			return;
 		}
 		
-		liveBullets++;
+		liveBullets.incrementAndGet();
 		
 		synchronized(fireSound){		
 			if(fireSound.isPlaying()) fireSound.stop(); 
@@ -36,15 +45,14 @@ public class DoublePowerUp extends PowerUp {
 		Point from = new Point();
 		from.x = owner.getPos().x + 23f; // 23 is half size of metallion sprite
 		from.y = owner.getPos().y;
-		BasicBullet bullet = new BasicBullet(from){
-			@Override
-			public void removeLayerFromWorld(){
-				super.removeLayerFromWorld();
-				liveBullets--;
+		BasicBullet bullet = new BasicBullet(this.owner.game(), from);
+		bullet.alive.connect(alive -> {
+			if (!alive) {
+				liveBullets.decrementAndGet();
 			}
-		};
-		
-		bullet.addToWorld(owner.getWorld());
+		});
+
+		this.owner.getWorld().addActor(bullet);
 	}
 
 	@Override

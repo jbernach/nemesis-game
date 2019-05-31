@@ -1,33 +1,40 @@
 package com.superjose128.nemesis.core.powerup;
 
 import com.superjose128.nemesis.core.NemesisGame;
+import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.actor.weapons.BasicBullet;
 import pythagoras.f.Point;
 import tripleplay.sound.Clip;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class BasicFirePowerUp extends PowerUp {
-	final static private Clip fireSound = (Clip) NemesisGame.soundsFx.getSound("normalFire");
+	private Clip fireSound;
 	private final static int MAX_BULLETS = 3;
-	private static int liveBullets = 0;
+	private AtomicInteger liveBullets = new AtomicInteger(0);
 	
 	public BasicFirePowerUp(){
 		super();
 		this.name = "FIRE";
-				
-		this.maxLevels = 1;
+
 		this.basic = true; 
 	}
-	
+
+	@Override
+	public void onArmed(Player player) {
+		super.onArmed(player);
+		fireSound = (Clip) player.game().soundsFx.getSound("normalFire");
+	}
+
 	@Override
 	public void onFire() {
 		
-		if(getLiveBullets() >= MAX_BULLETS){
+		if(liveBullets.intValue() >= MAX_BULLETS){
 			return;
 		}
 					
-		incLiveBullets(1);	
-		
-		
+		liveBullets.incrementAndGet();
+
 		synchronized(fireSound){		
 			if(fireSound.isPlaying()) fireSound.stop(); 
 			fireSound.play();
@@ -37,28 +44,18 @@ public class BasicFirePowerUp extends PowerUp {
 		Point from = new Point();
 		from.x = owner.getPos().x + 46f; // 46 is half size of metallion sprite
 		from.y = owner.getPos().y;
-		BasicBullet bullet = new BasicBullet(from){
-			@Override
-			public void onDeath(){
-				incLiveBullets(-1);
+		BasicBullet bullet = new BasicBullet(this.owner.game(), from);
+		bullet.alive.connect(alive -> {
+			if (!alive) {
+				liveBullets.decrementAndGet();
 			}
-		};
-		
-		bullet.addToWorld(owner.getWorld());
+		});
+
+		this.owner.getWorld().addActor(bullet);
 	}
 
 	@Override
 	public void onLevelUp() {
 		// NOP
 	}
-
-	public static synchronized int getLiveBullets() {
-		return liveBullets;
-	}
-
-	public static synchronized void incLiveBullets(int inc) {
-		BasicFirePowerUp.liveBullets = getLiveBullets() + inc;
-	}
-
-	
 }

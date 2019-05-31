@@ -5,8 +5,7 @@ import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.actor.PlayerMetallion;
 import com.superjose128.nemesis.core.actor.enemies.Barrel;
 import com.superjose128.nemesis.core.actor.enemies.Enemy;
-import com.superjose128.nemesis.core.collision.CollideableTypes;
-import com.superjose128.nemesis.core.collision.Collision;
+import com.superjose128.nemesis.core.actor.weapons.PowerUpCapsule;
 import com.superjose128.nemesis.core.collision.CollisionManager;
 import com.superjose128.nemesis.core.powerup.*;
 import playn.core.*;
@@ -19,7 +18,6 @@ import react.Slot;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 
 /**
@@ -161,7 +159,7 @@ public class GameWorld {
         weaponSel1 = new WeaponSelectionModel(player1, weaponBoard1);
 
         weaponSel1.addSelectablePowerUp(new SpeedPowerUp());
-        weaponSel1.addSelectablePowerUp(new MissiliePowerUp());
+        weaponSel1.addSelectablePowerUp(new MissilePowerUp());
         weaponSel1.addSelectablePowerUp(new DoublePowerUp());
         weaponSel1.addSelectablePowerUp(new LaserPowerUp());
         weaponSel1.addSelectablePowerUp(new OptionPowerUp());
