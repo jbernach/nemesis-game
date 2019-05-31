@@ -1,6 +1,8 @@
 package com.superjose128.nemesis.core.actor;
 
+import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.NemesisGame;
+import playn.core.Game;
 
 /**
  *  Actor than automatically detaches from the world when its
@@ -12,8 +14,8 @@ public abstract class DieOnTimeActor extends Actor {
 	private long lifeTime = 1000; // ms
 	private long life = lifeTime;
 
-	public DieOnTimeActor(NemesisGame game) {
-		super(game);
+	public DieOnTimeActor(GameWorld world) {
+		super(world);
 	}
 
 	public void update(int delta) {

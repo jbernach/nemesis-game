@@ -3,8 +3,6 @@ package com.superjose128.nemesis.core;
 import playn.core.Game;
 import playn.core.Image;
 import playn.scene.ImageLayer;
-import react.Signal;
-import react.Slot;
 import tripleplay.game.ScreenStack;
 
 public class LogoScreen extends ScreenStack.UIScreen {
@@ -12,17 +10,13 @@ public class LogoScreen extends ScreenStack.UIScreen {
 
     private final NemesisGame game;
 
-    private final Signal<Boolean> _completeSignal = new Signal<Boolean>();
-    private ImageLayer _logo;
+    private ImageLayer logo;
+    private Image imageLogo;
 
     public LogoScreen(NemesisGame game) {
         super(game.plat);
         this.game = game;
-        this._completeSignal.connect(new Slot<Boolean>() {
-            public void onEmit(Boolean event) {
-                game.screens.push(new MainMenuScreen(game));
-            }
-        });
+
     }
 
     @Override
@@ -34,28 +28,53 @@ public class LogoScreen extends ScreenStack.UIScreen {
     public void wasAdded() {
         super.wasAdded();
 
-        Image imageLogo = game.plat.assets().getImage("images/konami_logo.png");
-        _logo = new ImageLayer(imageLogo);
+        imageLogo = game.plat.assets().getImage("images/konami_logo.png");
+        logo = new ImageLayer(imageLogo);
 
         // Preload of game sounds
         this.game.soundsFx.loadAllSounds();
 
-        imageLogo.state.onComplete(result -> {
+        imageLogo.state.onComplete(image -> {
             float anchoImagenDeseado = this.size().width() / 4f;
-            float escalaImg = anchoImagenDeseado / result.get().width();
+            float escalaImg = anchoImagenDeseado / image.get().width();
 
-            _logo.setScale(escalaImg);
-            _logo.setOrigin(result.get().width() / 2, result.get().height() / 2);
-            _logo.setTranslation(this.size().width() / 2, -_logo.height() / 2);
+            logo.setScale(escalaImg);
+            logo.setOrigin(image.get().width() / 2, image.get().height() / 2);
+            logo.setTranslation(this.size().width() / 2, -logo.height() / 2);
+        });
+    }
 
-            layer.add(_logo);
+    @Override
+    public void wasShown() {
+        super.wasShown();
 
-            this.iface.anim.tweenY(_logo).to(this.size().height() / 3f).in(DURATION).easeInOut().then().emit(_completeSignal, true);
+        imageLogo.state.onComplete(image -> {
+            layer.add(logo);
+
+            this.iface.anim.tweenY(logo).to(this.size().height() / 3f).in(DURATION).easeInOut()
+                    .then().delay(1000).then().action(() -> {
+
+                game.screens.push(new MainMenuScreen(game));
+            });
+
         });
 
         imageLogo.state.onFailure(error -> {
             game.plat.log().error("No se pudo cargar el logo.", error);
-            _completeSignal.emit(true); // Continue to next screen
+            game.screens.push(new MainMenuScreen(game));
         });
+    }
+
+    @Override
+    public void wasHidden() {
+        super.wasHidden();
+        this.iface.anim.clear();
+    }
+
+    @Override
+    public void wasRemoved() {
+        super.wasRemoved();
+        iface.disposeRoots();
+        layer.disposeAll();
     }
 }

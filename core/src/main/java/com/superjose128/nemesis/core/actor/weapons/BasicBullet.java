@@ -1,6 +1,6 @@
 package com.superjose128.nemesis.core.actor.weapons;
 
-import com.superjose128.nemesis.core.NemesisGame;
+import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.actor.Actor;
 import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
 import com.superjose128.nemesis.core.collision.Collideable;
@@ -14,8 +14,8 @@ import pythagoras.f.Point;
 public class BasicBullet extends DestroyWhenDissapearActor {
 	private final PolygonShape shape = new PolygonShape();
 	
-	public BasicBullet(NemesisGame game, Point pos){
-		super(game);
+	public BasicBullet(GameWorld world, Point pos){
+		super(world);
 		this.setPos(pos.x, pos.y);
 		this.vel.y = 0f;
 		this.vel.x = 1000f;

@@ -1,7 +1,6 @@
 package com.superjose128.nemesis.core.actor.enemies;
 
-import com.superjose128.nemesis.core.NemesisGame;
-import com.superjose128.nemesis.core.collision.Collideable;
+import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.Shape;
@@ -10,8 +9,8 @@ import playn.core.Image;
 public class Barrel extends Enemy {
     private final PolygonShape shape = new PolygonShape();
 
-    public Barrel(NemesisGame game) {
-        super(game);
+    public Barrel(GameWorld world) {
+        super(world);
 
         shape.setAsBox(18, 32); // half size of the sprite size
     }

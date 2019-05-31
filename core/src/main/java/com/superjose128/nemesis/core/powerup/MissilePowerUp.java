@@ -30,7 +30,7 @@ public class MissilePowerUp extends PowerUp {
 		from.x = owner.getPos().x;
 		from.y = owner.getPos().y + 26f;
 
-		Missile missile = new Missile(this.owner.game(), from);
+		Missile missile = new Missile(this.owner.getWorld(), from);
 		missile.alive.connect(alive -> {
 			if (!alive) {
 				liveBullets.decrementAndGet();

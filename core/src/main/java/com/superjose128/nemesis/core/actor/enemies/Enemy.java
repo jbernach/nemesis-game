@@ -1,6 +1,6 @@
 package com.superjose128.nemesis.core.actor.enemies;
 
-import com.superjose128.nemesis.core.NemesisGame;
+import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
 import com.superjose128.nemesis.core.actor.Explosion;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
@@ -12,8 +12,8 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 	protected int score = 100;
 
 
-	public Enemy(NemesisGame game) {
-		super(game);
+	public Enemy(GameWorld world) {
+		super(world);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 	@Override
 	public void die() {
 		super.die();
-		Explosion explosion = new Explosion(game(), this.getPos(),300) {
+		Explosion explosion = new Explosion(world, this.getPos(),300) {
 			@Override
 			public AnimatedSprite initializeSprite() {
 				Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode1.png");

@@ -87,21 +87,54 @@ public class GameWorld {
         collisionManager.processCollisions();
 
         this.weaponSel1.update(delta); // update score, lives, etc
-        //log().debug("actors: " + actors.size());
     }
 
     public void paint(Clock clock) {
         for (Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
             it.next().paint(clock);
         }
-
-        game().update.emit(clock);
     }
 
     private void init() {
         initPlayer();
         initWeaponBoard();
         initIO();
+        loadLevel(currentLevel);
+    }
+
+    private void initPlayer() {
+        player1 = new PlayerMetallion(this);
+
+        player1.alive.connect(alive -> {
+                if (!alive) {
+                    if (player1.getLives() == 0) {
+                        GameWorld.this.gameOver();
+                    } else {
+                        player1.setLives(player1.getLives() - 1);
+                        loadLevel(currentLevel);
+                    }
+                }
+            }
+        );
+    }
+
+    private void initWeaponBoard() {
+        weaponBoard1 = new WeaponBoard(plat, WORLD_WIDTH, SCORE_AREA_HEIGHT, 10);
+        weaponSel1 = new WeaponSelectionModel(player1, weaponBoard1);
+
+        weaponSel1.addSelectablePowerUp(new SpeedPowerUp());
+        weaponSel1.addSelectablePowerUp(new MissilePowerUp());
+        weaponSel1.addSelectablePowerUp(new DoublePowerUp());
+        weaponSel1.addSelectablePowerUp(new LaserPowerUp());
+        weaponSel1.addSelectablePowerUp(new OptionPowerUp());
+        weaponSel1.addSelectablePowerUp(new ShieldPowerUp());
+
+        scoreLayer.add(new Layer() {
+            @Override
+            protected void paintImpl(Surface surface) {
+                weaponBoard1.paint(surface);
+            }
+        });
     }
 
     private void initIO() {
@@ -154,55 +187,11 @@ public class GameWorld {
 
     }
 
-    private void initWeaponBoard() {
-        weaponBoard1 = new WeaponBoard(plat, WORLD_WIDTH, SCORE_AREA_HEIGHT, 10);
-        weaponSel1 = new WeaponSelectionModel(player1, weaponBoard1);
-
-        weaponSel1.addSelectablePowerUp(new SpeedPowerUp());
-        weaponSel1.addSelectablePowerUp(new MissilePowerUp());
-        weaponSel1.addSelectablePowerUp(new DoublePowerUp());
-        weaponSel1.addSelectablePowerUp(new LaserPowerUp());
-        weaponSel1.addSelectablePowerUp(new OptionPowerUp());
-        weaponSel1.addSelectablePowerUp(new ShieldPowerUp());
-
-        scoreLayer.add(new Layer() {
-            @Override
-            protected void paintImpl(Surface surface) {
-                weaponBoard1.paint(surface);
-            }
-        });
-    }
-
-    private void initPlayer() {
-        Player deadPlayer = player1;
-
-        player1 = new PlayerMetallion((game()));
-        if (deadPlayer != null) {
-            player1.setLives(deadPlayer.getLives() - 1);
-            player1.setScore(deadPlayer.getScore());
-        }
-
-        player1.alive.connect(new Slot<Boolean>() {
-            @Override
-            public void onEmit(Boolean event) {
-                if (!event.booleanValue()) {
-                    if (player1.getLives() == 0) {
-                        GameWorld.this.gameOver();
-                    } else {
-                        initPlayer();
-                        initIO();
-                        weaponSel1.setPlayer(player1);
-                        loadLevel(currentLevel);
-                    }
-                }
-            }
-        });
-    }
-
     public void loadLevel(String level) {
         currentLevel = level;
         clearLevel();
         addActor(player1);
+
         // TODO: load level
         Canvas baseBackground = this.plat.graphics().createCanvas(NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
 
@@ -211,13 +200,13 @@ public class GameWorld {
         baseBackground .fillRect(0, 0, NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
         backgroundLayer.add(new ImageLayer(baseBackground.snapshot()));
 
-        createTestStuff();
+       // createTestStuff();
 
     }
 
     private void createTestStuff() {
         for (int i = 0; i < 20; i++) {
-            Enemy enemy = new Barrel(game());
+            Enemy enemy = new Barrel(this);
             enemy.setPos(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT);
             enemy.setSpeed(100 * (float)Math.random());
             enemy.moveLeft();
@@ -230,7 +219,7 @@ public class GameWorld {
         }
 
         for (int i = 0; i < 10; i++) {
-            PowerUpCapsule capsule = new PowerUpCapsule(game(), new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
+            PowerUpCapsule capsule = new PowerUpCapsule(this, new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
             this.addActor(capsule);
             capsule.alive.connect(alive -> {
                 if (!alive) {

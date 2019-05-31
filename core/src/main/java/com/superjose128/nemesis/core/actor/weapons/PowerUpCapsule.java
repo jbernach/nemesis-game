@@ -1,8 +1,7 @@
 package com.superjose128.nemesis.core.actor.weapons;
 
-import com.superjose128.nemesis.core.NemesisGame;
+import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
-import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -13,8 +12,8 @@ import pythagoras.f.Point;
 public class PowerUpCapsule extends DestroyWhenDissapearActor {
 	private static final PolygonShape shape = new PolygonShape();
 
-	public PowerUpCapsule(NemesisGame game, Point pos){
-		super(game);
+	public PowerUpCapsule(GameWorld world, Point pos){
+		super(world);
 		this.setPos(pos.x, pos.y);
 		this.vel.y = 0f;
 		this.vel.x = -200f;

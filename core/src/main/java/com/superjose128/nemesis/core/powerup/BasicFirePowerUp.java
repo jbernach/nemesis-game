@@ -44,7 +44,7 @@ public class BasicFirePowerUp extends PowerUp {
 		Point from = new Point();
 		from.x = owner.getPos().x + 46f; // 46 is half size of metallion sprite
 		from.y = owner.getPos().y;
-		BasicBullet bullet = new BasicBullet(this.owner.game(), from);
+		BasicBullet bullet = new BasicBullet(this.owner.getWorld(), from);
 		bullet.alive.connect(alive -> {
 			if (!alive) {
 				liveBullets.decrementAndGet();

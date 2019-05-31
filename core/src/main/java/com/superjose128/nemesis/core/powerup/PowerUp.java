@@ -133,7 +133,7 @@ public abstract class PowerUp {
 
 		
 	public void paint(Clock clock, Point ownerPaintPosition) {
-		if (sprite != null) {
+		if (sprite != null && owner != null) {
 			if(!spriteOnLayer){
 				owner.getWorld().getActorLayer().add(sprite.layer);
 				spriteOnLayer = true;

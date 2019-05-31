@@ -5,7 +5,7 @@ import tripleplay.game.ScreenStack;
 
 public class GameWorldScreen extends ScreenStack.UIScreen{
 	private final NemesisGame game;
-	private GameWorld gameWorld = new GameWorld(this);
+	private GameWorld gameWorld;
 	    
 	//private GroupLayer controlLayer;
 	    
@@ -13,6 +13,7 @@ public class GameWorldScreen extends ScreenStack.UIScreen{
 		super(game.plat);
 		this.game = game;
 
+		this.gameWorld= new GameWorld(this);
 		this.update.connect(clock -> gameWorld.update(clock.dt));
 		this.paint.connect(clock -> gameWorld.paint(clock));
 	}

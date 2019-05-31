@@ -1,7 +1,6 @@
 package com.superjose128.nemesis.core.actor;
 
 import com.superjose128.nemesis.core.GameWorld;
-import com.superjose128.nemesis.core.NemesisGame;
 
 /**
  *  Actor than automatically detaches from the world when its
@@ -10,8 +9,8 @@ import com.superjose128.nemesis.core.NemesisGame;
  *
  */
 public abstract class DestroyWhenDissapearActor extends Actor {
-	public DestroyWhenDissapearActor(NemesisGame game) {
-		super(game);
+	public DestroyWhenDissapearActor(GameWorld world) {
+		super(world);
 	}
 
 	public void update(int delta) {

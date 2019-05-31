@@ -1,12 +1,9 @@
 package com.superjose128.nemesis.core.actor;
 
 import com.superjose128.nemesis.core.GameWorld;
-import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.collision.Collideable;
-import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.powerup.PowerUp;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
-import org.jbox2d.collision.shapes.Shape;
 import playn.core.Clock;
 import pythagoras.f.Point;
 
@@ -25,8 +22,8 @@ public abstract class Player extends Actor {
 	
 	protected HashMap<String,PowerUp> powerUps = new HashMap<String,PowerUp>();
 
-	public Player(NemesisGame game) {
-		super(game);
+	public Player(GameWorld world) {
+		super(world);
 	}
 
 	public boolean hasPowerUp(String name){
@@ -151,12 +148,6 @@ public abstract class Player extends Actor {
 	
 	public void addScore(int score) {
 		this.score += score;
-	}
-
-	@Override
-	public AnimatedSprite initializeSprite() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

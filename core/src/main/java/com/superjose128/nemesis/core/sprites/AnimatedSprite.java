@@ -36,7 +36,7 @@ public class AnimatedSprite {
 		this.height = tileHei;
 		this.layer =  new ImageLayer();
 		layer.setOrigin(this.width / 2, this.height/ 2);
-		updateImage();
+		image.state.onComplete(img -> updateImage());
 	}
 
 	/**

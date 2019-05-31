@@ -4,7 +4,6 @@ import playn.core.Canvas;
 import playn.core.Font;
 import playn.core.Game;
 import playn.core.Image;
-import playn.core.Keyboard;
 import playn.core.TextFormat;
 import playn.core.TextLayout;
 import playn.scene.ImageLayer;
@@ -109,7 +108,7 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
 
     private void flashStart() {
         AnimBuilder anim = iface.anim.repeat(logoLayer);
-        Action action = anim.delay(100).then().action(new Runnable() {
+        anim.delay(100).then().action(new Runnable() {
             int cycle = 0;
             boolean started = false;
 

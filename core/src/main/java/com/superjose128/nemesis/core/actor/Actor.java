@@ -29,15 +29,18 @@ public abstract class Actor implements Controllable, Collideable {
     protected Point pos = new Point(0f, 0f); // Current position (px world)
     protected Vector vel = new Vector(0f, 0f); // Velocity (px world / sec)
     protected Vector acel = new Vector(0f, 0f); // Acceleration (px worl / sec*sec)
-    protected GameWorld world = null; // Nivel en el que se encuentra el actor
+    protected GameWorld world; // Nivel en el que se encuentra el actor
 
     protected float speed = 0; // speed magnitude (world px/sec) for control
 
     protected final Transform t = new Transform();
 
-    public Actor(NemesisGame game) {
-        this.game = game;
+    public Actor(GameWorld world) {
+        this.game = world.game();
+        this.world = world;
+        this.isAlive = true;
         this.sprite = initializeSprite();
+        this.alive.emit(true);
     }
 
     public abstract AnimatedSprite initializeSprite();
@@ -46,13 +49,6 @@ public abstract class Actor implements Controllable, Collideable {
         if (this.sprite == null) return null;
 
         return sprite.layer;
-    }
-
-    public void setWorld(GameWorld world) {
-        this.world = world;
-        this.isAlive = true;
-        this.alive.emit(true);
-
     }
 
     public void die() {
