@@ -74,7 +74,7 @@ public abstract class Player extends Actor {
 	
 	public void paint(Clock clock) {
 		super.paint(clock);
-		
+
 		// PowerUp painting
 		for(PowerUp poup:this.powerUps.values()){
 			poup.paint(clock, new Point(this.sprite.layer.tx(),this.sprite.layer.ty()));

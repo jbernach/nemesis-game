@@ -99,7 +99,6 @@ public class GameWorld {
         initPlayer();
         initWeaponBoard();
         initIO();
-        loadLevel(currentLevel);
     }
 
     private void initPlayer() {

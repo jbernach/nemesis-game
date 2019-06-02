@@ -36,21 +36,29 @@ public class PlayerMetallion extends Player {
 
     @Override
     public void moveUp() {
-        this.sprite.setRow(PlayerMetallion.ROW_UP);
+        if (this.sprite.getBank() == 0) {
+            this.sprite.setFrame(0);
+        }
+
+        this.sprite.setBank(PlayerMetallion.ROW_UP);
         super.moveUp();
     }
 
     @Override
     public void moveDown() {
-        this.sprite.setRow(PlayerMetallion.ROW_DOWN);
+        if (this.sprite.getBank() == 0) {
+            this.sprite.setFrame(0);
+        }
+
+        this.sprite.setBank(PlayerMetallion.ROW_DOWN);
         super.moveDown();
     }
 
     @Override
     public void stopVertical() {
-        this.sprite.setRow(0);
+        this.sprite.setBank(0);
+        this.sprite.setFrame(0);
         super.stopVertical();
-
     }
 
     @Override
