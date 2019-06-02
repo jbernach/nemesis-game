@@ -13,7 +13,7 @@ public class AnimatedSprite {
 	private float rowY;
 	private int frame;
 
-	public final int width, height;
+	private final int width, height;
 	public boolean loop = true;
 	public final ImageLayer layer;
 
@@ -41,22 +41,22 @@ public class AnimatedSprite {
 
 	/**
 	 * Selecciona la fila (el banco de sprites a usar)
-	 * @param row
+	 * @param row new  row
 	 */
 	public void setRow(int row) {
-		rowY = row * height;
-		frame = 0;
+		this.rowY = row * this.height;
+		this.frame = 0;
 		updateImage();
 	}
 
 	/**
 	 * Sprite paint on layer
-	 * @param clock
+	 * @param clock Platform clock
 	 */
 	public void paint(Clock clock) {
 		if(msPerFrame > 0){
 			nextFrame -= clock.dt;
-			int f = frame;
+			int f = this.frame;
 			while (nextFrame < 0) {
 				nextFrame += msPerFrame;
 				if(loop){
@@ -66,24 +66,30 @@ public class AnimatedSprite {
 					f = Math.min(f, tilesPerRow-1);
 				}
 			}
-			if (f != frame){
-				frame = f;
-				updateImage();
-			}
+
+			setFrame(f);
 		}
-		
 	}
 
 	private void updateImage() {
-		this.layer.setSource(this.image.region(frame * width, rowY, width, height));
+		this.layer.setSource(this.image.region(this.frame * this.width, this.rowY, this.width, this.height));
 	}
 
 	public float getMsPerFrame() {
-		return msPerFrame;
+		return this.msPerFrame;
 	}
 
 	public void setMsPerFrame(float msPerFrame) {
 		this.msPerFrame = msPerFrame;
 		this.nextFrame = msPerFrame;
 	}
+
+	public void setFrame(int frame) {
+		if (frame != this.frame) {
+			this.frame = frame;
+			updateImage();
+		}
+
+	}
+
 }

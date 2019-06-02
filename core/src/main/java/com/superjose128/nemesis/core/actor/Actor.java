@@ -74,9 +74,8 @@ public abstract class Actor implements Controllable, Collideable {
         float alpha = clock.alpha;
 
         if (sprite != null) {
-            sprite.paint(clock);
-
             sprite.layer.setTranslation(MathUtil.lerp(oldPos.x, pos.x, alpha), MathUtil.lerp(oldPos.y, pos.y, alpha));
+            sprite.paint(clock);
         }
     }
 

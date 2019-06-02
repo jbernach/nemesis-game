@@ -193,12 +193,12 @@ public class GameWorld {
         addActor(player1);
 
         // TODO: load level
-        Canvas baseBackground = this.plat.graphics().createCanvas(NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
+        /*Canvas baseBackground = this.plat.graphics().createCanvas(NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
 
         //surfaceB.setFillColor(0xFF2B76FF);
         baseBackground .setFillColor(0xFF000000);
         baseBackground .fillRect(0, 0, NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
-        backgroundLayer.add(new ImageLayer(baseBackground.snapshot()));
+        backgroundLayer.add(new ImageLayer(baseBackground.snapshot()));*/
 
        // createTestStuff();
 
