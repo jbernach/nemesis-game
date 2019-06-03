@@ -68,7 +68,6 @@ public class AnimatedSprite {
     }
 
     private void updateImage() {
-        System.out.println("Img:" + this.image.width() + " Bank:" + this.bank + " Frame:" + this.frame);
         this.layer.setRegion(new Rectangle(this.frame * this.width, this.rowY, this.width, this.height));
     }
 

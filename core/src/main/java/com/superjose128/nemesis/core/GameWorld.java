@@ -109,6 +109,12 @@ public class GameWorld {
                     if (player1.getLives() == 0) {
                         GameWorld.this.gameOver();
                     } else {
+                        int newLives = player1.getLives() -1;
+                        int newScore = player1.getScore();
+
+                        player1 = new PlayerMetallion(this);
+                        player1.setLives(newLives);
+                        player1.setScore(newScore);
                         player1.setLives(player1.getLives() - 1);
                         loadLevel(currentLevel);
                     }
@@ -210,21 +216,11 @@ public class GameWorld {
             enemy.setSpeed(100 * (float)Math.random());
             enemy.moveLeft();
             this.addActor(enemy);
-            enemy.alive.connect(alive -> {
-                if (!alive) {
-                    this.removeActor(enemy);
-                }
-            });
         }
 
         for (int i = 0; i < 10; i++) {
             PowerUpCapsule capsule = new PowerUpCapsule(this, new Point(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT));
             this.addActor(capsule);
-            capsule.alive.connect(alive -> {
-                if (!alive) {
-                    this.removeActor(capsule);
-                }
-            });
         }
     }
 
@@ -262,6 +258,12 @@ public class GameWorld {
             getActorLayer().add(actor.getLayer());
         }
         collisionManager.addCollideable(actor);
+
+        actor.alive.connect(alive -> {
+            if(!alive) {
+                removeActor(actor);
+            }
+        });
     }
 
     public void removeActor(Actor actor) {

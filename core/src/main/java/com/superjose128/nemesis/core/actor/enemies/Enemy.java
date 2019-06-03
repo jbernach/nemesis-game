@@ -40,9 +40,8 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 				return this.game.soundsFx.getSound("explode1");
 			}
 		};
-
+		
 		getWorld().addActor(explosion);
-
 		getWorld().getPlayer1().addScore(this.score);
 	}
 	

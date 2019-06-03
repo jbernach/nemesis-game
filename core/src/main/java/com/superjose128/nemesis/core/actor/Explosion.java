@@ -39,4 +39,5 @@ public abstract class Explosion extends DieOnTimeActor {
 			sound.play();			
 		}
 	}
+
 }
