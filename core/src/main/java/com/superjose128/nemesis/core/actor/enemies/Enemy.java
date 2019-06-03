@@ -28,7 +28,7 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 
 		super.die();
 
-		if (!this.isOutOfBounds()) {
+		if (!this.isOutOfBounds() && this.isVisible()) {
 			Explosion explosion = new Explosion(world, this.getPos(),300) {
 				@Override
 				public AnimatedSprite initializeSprite() {

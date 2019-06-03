@@ -24,14 +24,19 @@ public class PlayerMetallion extends Player {
 
         this.setPos(GameWorld.WORLD_WIDTH / 3f, GameWorld.WORLD_HEIGHT / 2f);
 
+        initializePowerUps();
+
+        shape.setAsBox(46, 16);
+    }
+
+    @Override
+    public void initializePowerUps() {
         PowerUp pup = new SpeedPowerUp();
         powerUps.put(pup.getName(), pup);
         pup.onArmed(this);
         pup = new BasicFirePowerUp();
         powerUps.put(pup.getName(), pup);
         pup.onArmed(this);
-
-        shape.setAsBox(46, 16);
     }
 
     @Override
@@ -83,6 +88,13 @@ public class PlayerMetallion extends Player {
 
     @Override
     public void die() {
+        this.setVisible(false);
+        //remove Powerups
+        PowerUp powerUpsArray[] = this.powerUps.values().toArray(new PowerUp[0]);
+        for(PowerUp poup:powerUpsArray){
+            this.disarmPowerUp(poup.getName());
+        }
+
         Explosion explosion = new Explosion(this.world, this.getPos(), 2000) {
             @Override
             public AnimatedSprite initializeSprite() {
@@ -99,5 +111,10 @@ public class PlayerMetallion extends Player {
         };
 
         getWorld().addActor(explosion);
+        explosion.alive.connect(alive -> {
+           if(!alive) {
+               super.die();
+           }
+        });
     }
 }

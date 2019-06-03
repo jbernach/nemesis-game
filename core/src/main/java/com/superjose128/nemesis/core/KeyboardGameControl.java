@@ -124,4 +124,12 @@ public class KeyboardGameControl extends Keyboard.KeySlot {
         }
 
     }
+
+    public Controllable getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Controllable player) {
+        this.player = player;
+    }
 }

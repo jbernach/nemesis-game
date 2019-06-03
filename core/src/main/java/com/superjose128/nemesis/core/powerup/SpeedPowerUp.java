@@ -6,6 +6,8 @@ import playn.core.Image;
 import pythagoras.f.Point;
 
 public class SpeedPowerUp extends PowerUp {
+	public final static String NAME = "SPEED";
+
 	private float initialSpeed = 320f;
 	private float speedInc = 60f;
 	private float initialBlinkMs = 250f; // Initial interval of flame blink
@@ -13,7 +15,7 @@ public class SpeedPowerUp extends PowerUp {
 	
 	public SpeedPowerUp() {
 		super();
-		this.name = "SPEED";
+		this.name = NAME;
 
 		this.relativeToActorPos = new Point(-92/2-20+5,-1);
 		this.maxLevels = 9;
@@ -38,5 +40,10 @@ public class SpeedPowerUp extends PowerUp {
 	public void onLevelUp() {
 		this.owner.setSpeed(initialSpeed + (this.level - 1)*speedInc);
 		this.sprite.setMsPerFrame(initialBlinkMs + (this.level - 1)*blinkMsInc);
+	}
+
+	public void resetSpeed () {
+		this.level = 1;
+		onArmed(this.owner);
 	}
 }

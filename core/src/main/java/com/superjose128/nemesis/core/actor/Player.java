@@ -3,7 +3,6 @@ package com.superjose128.nemesis.core.actor;
 import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.collision.Collideable;
 import com.superjose128.nemesis.core.powerup.PowerUp;
-import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import playn.core.Clock;
 import pythagoras.f.Point;
 
@@ -24,6 +23,9 @@ public abstract class Player extends Actor {
 
 	public Player(GameWorld world) {
 		super(world);
+	}
+
+	public void initializePowerUps() {
 	}
 
 	public boolean hasPowerUp(String name){
@@ -75,6 +77,8 @@ public abstract class Player extends Actor {
 	public void paint(Clock clock) {
 		super.paint(clock);
 
+		if (this.sprite == null || this.sprite.layer == null) return;
+
 		// PowerUp painting
 		for(PowerUp poup:this.powerUps.values()){
 			poup.paint(clock, new Point(this.sprite.layer.tx(),this.sprite.layer.ty()));
@@ -93,17 +97,13 @@ public abstract class Player extends Actor {
 
 	@Override
 	public void die(){
-		//remove Powerups
-		PowerUp powerUpsArray[] = this.powerUps.values().toArray(new PowerUp[0]);
-		for(PowerUp poup:powerUpsArray){
-			disarmPowerUp(poup.getName());
-		}
-
 		super.die();
 	}
 
 	@Override
 	public void collisionCallback(Collideable hit) {
+		if (!this.isVisible()) return;
+
 		switch(hit.getType()){
 			case ENEMY:
 				if(invulnerable) return;

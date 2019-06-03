@@ -50,10 +50,8 @@ public abstract class PowerUp {
 	 * Fired when the actor loses this powerup.
 	 */
 	public void onDisarmed(){
-		//PlayN.log().debug("disarming " + this.name);
-		
-		if(owner != null && sprite != null && spriteOnLayer){
-			owner.getWorld().getActorLayer().remove(sprite.layer);
+		if(sprite != null){
+			sprite.dispose();
 		}
 	}
 	
@@ -120,6 +118,9 @@ public abstract class PowerUp {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+		if(this.sprite != null && this.sprite.layer != null) {
+			sprite.layer.setVisible(enabled);
+		}
 	}
 
 	public boolean isBasic() {
@@ -142,8 +143,6 @@ public abstract class PowerUp {
 			if(this.isEnabled()){
 				sprite.paint(clock);
 				sprite.layer.setTranslation(ownerPaintPosition.x + relativeToActorPos.x,ownerPaintPosition.y + relativeToActorPos.y);
-			}else{
-				sprite.layer.setTranslation(-100, -100); // hide the layer
 			}
 		}
 	}
@@ -161,9 +160,9 @@ public abstract class PowerUp {
 			}
 		}
 	}
-	
+
+	// disable the basic excluded powerups
 	public void disableBasicExcluded(Player guy){
-		// disable or disarm the excluded powerups
 		if(excludes != null && excludes.length > 0){
 			for(String name:excludes){
 				PowerUp pup = guy.getArmedPowerUp(name);

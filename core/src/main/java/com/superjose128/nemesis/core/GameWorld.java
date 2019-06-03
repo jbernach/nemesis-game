@@ -14,7 +14,6 @@ import playn.scene.ImageLayer;
 import playn.scene.Layer;
 import pythagoras.f.Point;
 import react.Connection;
-import react.Slot;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -109,18 +108,15 @@ public class GameWorld {
                     if (player1.getLives() == 0) {
                         GameWorld.this.gameOver();
                     } else {
-                        int newLives = player1.getLives() -1;
-                        int newScore = player1.getScore();
-
-                        player1 = new PlayerMetallion(this);
-                        player1.setLives(newLives);
-                        player1.setScore(newScore);
                         player1.setLives(player1.getLives() - 1);
+                        //player1.initializeSprite();
+                        player1.initializePowerUps();
                         loadLevel(currentLevel);
                     }
                 }
             }
         );
+
     }
 
     private void initWeaponBoard() {
@@ -195,7 +191,9 @@ public class GameWorld {
     public void loadLevel(String level) {
         currentLevel = level;
         clearLevel();
+
         addActor(player1);
+        player1.setVisible(true);
 
         // TODO: load level
         /*Canvas baseBackground = this.plat.graphics().createCanvas(NATIVE_RES_WIDTH, NATIVE_RES_HEIGHT);
@@ -230,9 +228,14 @@ public class GameWorld {
     }
 
     private void clearLevel() {
-        backgroundLayer.disposeAll();
-        actorLayer.disposeAll();
-        actors.clear();
+        Actor arr[] = actors.toArray(new Actor[0]);
+        for(Actor a:arr) {
+            if (!(a instanceof Player)) {
+                a.setVisible(false);
+                a.die();
+            }
+        }
+
         collisionManager = new CollisionManager();
         weaponSel1.setWeaponCoins(0);
     }

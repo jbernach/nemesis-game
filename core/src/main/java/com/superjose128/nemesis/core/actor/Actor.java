@@ -24,6 +24,8 @@ public abstract class Actor implements Controllable, Collideable {
     protected final NemesisGame game;
     public Signal<Boolean> alive = new Signal<Boolean>();
     private boolean isAlive = false;
+    private boolean visible = true;
+
     protected AnimatedSprite sprite; // Actor animated character on screen
     protected Point oldPos = new Point(0f, 0f); // Old position
     protected Point pos = new Point(0f, 0f); // Current position (px world)
@@ -194,5 +196,16 @@ public abstract class Actor implements Controllable, Collideable {
 
     public NemesisGame game() {
         return this.game;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+        if (this.getLayer() != null) {
+           this.getLayer().setVisible(visible);
+        }
     }
 }
