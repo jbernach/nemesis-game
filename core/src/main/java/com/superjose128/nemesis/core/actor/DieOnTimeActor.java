@@ -19,6 +19,8 @@ public abstract class DieOnTimeActor extends Actor {
 	}
 
 	public void update(int delta) {
+		if(!this.isAlive()) return;
+
 		super.update(delta);
 		
 		life = life - delta;

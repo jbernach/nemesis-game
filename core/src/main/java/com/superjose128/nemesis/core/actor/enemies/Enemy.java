@@ -24,25 +24,31 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 	
 	@Override
 	public void die() {
-		super.die();
-		Explosion explosion = new Explosion(world, this.getPos(),300) {
-			@Override
-			public AnimatedSprite initializeSprite() {
-				Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode1.png");
-				AnimatedSprite sp = new AnimatedSprite(imgExplosionSprite, 64, 64, 8, 50);
-				sp.loop = false;
+		if(!this.isAlive()) return;
 
-				return sp;
-			}
-			
-			@Override
-			public Playable getSound() {
-				return this.game.soundsFx.getSound("explode1");
-			}
-		};
-		
-		getWorld().addActor(explosion);
-		getWorld().getPlayer1().addScore(this.score);
+		super.die();
+
+		if (!this.isOutOfBounds()) {
+			Explosion explosion = new Explosion(world, this.getPos(),300) {
+				@Override
+				public AnimatedSprite initializeSprite() {
+					Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode1.png");
+					AnimatedSprite sp = new AnimatedSprite(imgExplosionSprite, 64, 64, 8, 50);
+					sp.loop = false;
+
+					return sp;
+				}
+
+				@Override
+				public Playable getSound() {
+					return this.game.soundsFx.getSound("explode1");
+				}
+			};
+
+			getWorld().addActor(explosion);
+			getWorld().getPlayer1().addScore(this.score);
+		}
+
 	}
 	
 }

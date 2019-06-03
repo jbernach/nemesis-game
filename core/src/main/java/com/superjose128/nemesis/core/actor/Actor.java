@@ -52,11 +52,16 @@ public abstract class Actor implements Controllable, Collideable {
     }
 
     public void die() {
+        if(!this.isAlive) return;
+
         this.isAlive = false;
+        this.sprite.dispose();
         alive.emit(false);
     }
 
     public void update(int delta) {
+        if(!this.isAlive) return;
+
         // used to interpolate on paint
         oldPos.x = pos.x;
         oldPos.y = pos.y;
@@ -71,6 +76,8 @@ public abstract class Actor implements Controllable, Collideable {
     }
 
     public void paint(Clock clock) {
+        if(!this.isAlive) return;
+
         float alpha = clock.alpha;
 
         if (sprite != null) {

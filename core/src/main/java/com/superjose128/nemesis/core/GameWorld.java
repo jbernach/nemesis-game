@@ -267,9 +267,7 @@ public class GameWorld {
     }
 
     public void removeActor(Actor actor) {
-        if (actor.getLayer() != null) {
-            this.getActorLayer().remove(actor.getLayer());
-        }
+        actors.remove(actor);
 
         collisionManager.removeCollideable(actor);
     }

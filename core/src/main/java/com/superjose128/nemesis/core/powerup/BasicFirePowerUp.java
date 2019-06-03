@@ -1,6 +1,5 @@
 package com.superjose128.nemesis.core.powerup;
 
-import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.actor.weapons.BasicBullet;
 import pythagoras.f.Point;

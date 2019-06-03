@@ -6,19 +6,19 @@ import playn.scene.ImageLayer;
 import pythagoras.f.Rectangle;
 
 public class AnimatedSprite {
-    private final Image image;
-    private final int tilesPerRow;
+    public ImageLayer layer;
+    private volatile  boolean disposed = false;
 
     private float msPerFrame;
     private float nextFrame;
 
     private int bank;
+    private final int tilesPerRow;
     private int rowY;
     private int frame;
 
     private final int width, height;
     public boolean loop = true;
-    public final ImageLayer layer;
 
     /**
      * Crea un sprite animado. Se pueden tener n bancos, cada uno conteniendo una secuencia animada de igual tamaño en todos los casos.
@@ -30,7 +30,6 @@ public class AnimatedSprite {
      * @param msPerFrame  Número de ms que deben transcurrir entre cada frame de animación.
      */
     public AnimatedSprite(Image image, int tileWid, int tileHei, int tilesPerRow, float msPerFrame) {
-        this.image = image;
         this.tilesPerRow = tilesPerRow;
         this.frame = 0;
         this.bank = 0;
@@ -68,7 +67,11 @@ public class AnimatedSprite {
     }
 
     private void updateImage() {
-        this.layer.setRegion(new Rectangle(this.frame * this.width, this.rowY, this.width, this.height));
+        synchronized (this) {
+            if (this.disposed) return;
+
+            this.layer.setRegion(new Rectangle(this.frame * this.width, this.rowY, this.width, this.height));
+        }
     }
 
     public float getMsPerFrame() {
@@ -101,6 +104,19 @@ public class AnimatedSprite {
             this.bank = bank;
             this.rowY = this.bank * this.height;
             updateImage();
+        }
+    }
+
+    public void dispose() {
+        synchronized (this){
+            if (this.disposed) return;
+
+            this.disposed = true;
+
+            if (this.layer != null) {
+                this.layer.close();
+                this.layer = null;
+            }
         }
     }
 }
