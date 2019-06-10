@@ -9,7 +9,7 @@ import playn.core.TextLayout;
 import playn.scene.ImageLayer;
 import playn.scene.Pointer;
 import tripleplay.anim.AnimBuilder;
-import tripleplay.anim.Animation.Action;
+import tripleplay.anim.Animator;
 import tripleplay.game.ScreenStack;
 import tripleplay.util.Colors;
 
@@ -76,18 +76,6 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
         captureKeyboardAndPointer();
     }
 
-    @Override
-    public void wasHidden() {
-        super.wasHidden();
-    }
-
-    @Override
-    public void wasRemoved() {
-        super.wasRemoved();
-
-        layer.disposeAll();
-    }
-
     private void startNewGame() {
         GameWorldScreen gameWorlScreen = new GameWorldScreen(this.game);
         game.screens.push(gameWorlScreen);
@@ -95,7 +83,6 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
     }
 
     private void captureKeyboardAndPointer() {
-
         this.layer.events().connect(new Pointer.Listener() {
             @Override
             public void onStart(Pointer.Interaction interaction) {
@@ -107,8 +94,10 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
     }
 
     private void flashStart() {
-        AnimBuilder anim = iface.anim.repeat(logoLayer);
-        anim.delay(100).then().action(new Runnable() {
+        Animator animator = new Animator();
+        this.paint.connect(animator.onPaint);
+
+        animator.repeat(logoLayer).delay(100).then().action(new Runnable() {
             int cycle = 0;
             boolean started = false;
 
@@ -126,8 +115,6 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
                     // START!
                     started = true;
                     startNewGame();
-                } else {
-                    iface.anim.clear();
                 }
             }
         });

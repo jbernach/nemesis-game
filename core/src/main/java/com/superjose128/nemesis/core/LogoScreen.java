@@ -3,6 +3,7 @@ package com.superjose128.nemesis.core;
 import playn.core.Game;
 import playn.core.Image;
 import playn.scene.ImageLayer;
+import tripleplay.anim.Animator;
 import tripleplay.game.ScreenStack;
 
 public class LogoScreen extends ScreenStack.UIScreen {
@@ -16,7 +17,6 @@ public class LogoScreen extends ScreenStack.UIScreen {
     public LogoScreen(NemesisGame game) {
         super(game.plat);
         this.game = game;
-
     }
 
     @Override
@@ -51,30 +51,17 @@ public class LogoScreen extends ScreenStack.UIScreen {
         imageLogo.state.onComplete(image -> {
             layer.add(logo);
 
-            this.iface.anim.tweenY(logo).to(this.size().height() / 3f).in(DURATION).easeInOut()
+            Animator animator = new Animator();
+            this.paint.connect(animator.onPaint);
+            animator.tweenY(logo).to(this.size().height() / 3f).in(DURATION).easeInOut()
                     .then().delay(1000).then().action(() -> {
-
-                game.screens.push(new MainMenuScreen(game));
+                this.game.screens.push(new MainMenuScreen(this.game));
             });
-
         });
 
         imageLogo.state.onFailure(error -> {
             game.plat.log().error("No se pudo cargar el logo.", error);
-            game.screens.push(new MainMenuScreen(game));
+            this.game.screens.push(new MainMenuScreen(this.game));
         });
-    }
-
-    @Override
-    public void wasHidden() {
-        super.wasHidden();
-        this.iface.anim.clear();
-    }
-
-    @Override
-    public void wasRemoved() {
-        super.wasRemoved();
-        iface.disposeRoots();
-        layer.disposeAll();
     }
 }

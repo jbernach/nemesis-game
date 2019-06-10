@@ -61,7 +61,6 @@ public abstract class Actor implements Controllable, Collideable {
 
         if (this.sprite != null && !this.isAlive ) {
            this.sprite.dispose();
-           this.sprite = null;
         }
     }
 
