@@ -26,6 +26,12 @@ public abstract class DestroyWhenDissapearActor extends Actor {
 		}
 	}
 
+	@Override
+	public void die() {
+		super.die();
+		getWorld().removeActor(this);
+	}
+
 	public boolean isOutOfBounds() {
 		return outOfBounds;
 	}

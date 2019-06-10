@@ -16,7 +16,6 @@ public class PlayerMetallion extends Player {
     final static int ROW_DOWN = 2;
 
     private Image imgSprite;
-    private Image imgExplosionSprite;
     private static final PolygonShape shape = new PolygonShape();
 
     public PlayerMetallion(GameWorld world) {
@@ -77,13 +76,13 @@ public class PlayerMetallion extends Player {
     }
 
     @Override
-    public AnimatedSprite initializeSprite() {
+    public void initializeSprite() {
         this.imgSprite = game.plat.assets().getImage("images/sprites/metallion.png");
-        this.imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode_viper.png");
 
         AnimatedSprite sp = new AnimatedSprite(imgSprite, 92, 64, 2, 600);
         sp.loop = false;
-        return sp;
+
+        this.sprite = sp;
     }
 
     @Override
@@ -97,11 +96,12 @@ public class PlayerMetallion extends Player {
 
         Explosion explosion = new Explosion(this.world, this.getPos(), 2000) {
             @Override
-            public AnimatedSprite initializeSprite() {
+            public void initializeSprite() {
+                Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode_viper.png");
                 AnimatedSprite sp = new AnimatedSprite(imgExplosionSprite, 128, 56, 5, 400);
                 sp.loop = false;
 
-                return sp;
+                this.sprite = sp;
             }
 
             @Override

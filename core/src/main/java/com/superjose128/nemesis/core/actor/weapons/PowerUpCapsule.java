@@ -32,9 +32,9 @@ public class PowerUpCapsule extends DestroyWhenDissapearActor {
 	}
 
 	@Override
-	public AnimatedSprite initializeSprite() {
+	public void initializeSprite() {
 		Image imgSprite = this.game.plat.assets().getImage("images/sprites/capsule_red.png");
-		return new AnimatedSprite(imgSprite, 64, 64, 2, 150);
+		this.sprite = new AnimatedSprite(imgSprite, 64, 64, 2, 150);
 	}
 
 }

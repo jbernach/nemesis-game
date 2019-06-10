@@ -21,11 +21,11 @@ public class Chiquis extends Enemy {
     }
 
     @Override
-    public AnimatedSprite initializeSprite() {
+    public void initializeSprite() {
         Image imgSprite = game.plat.assets().getImage("images/sprites/chiquis.png");
         AnimatedSprite sp = new AnimatedSprite(imgSprite, 64, 64, 1, 0);
 
-        return sp;
+        this.sprite = sp;
     }
 
 }

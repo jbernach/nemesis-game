@@ -36,9 +36,9 @@ public class BasicBullet extends DestroyWhenDissapearActor {
 
 
 	@Override
-	public AnimatedSprite initializeSprite() {
+	public void initializeSprite() {
 		Image imgSprite = game.plat.assets().getImage("images/sprites/bullet.png");
-		return new AnimatedSprite(imgSprite, 24, 8, 1, 0);
+		this.sprite = new AnimatedSprite(imgSprite, 24, 8, 1, 0);
 	}
 	
 	@Override

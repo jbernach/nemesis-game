@@ -19,7 +19,7 @@ public class CollisionManager {
     private IWorldPool pool = new DefaultWorldPool(World.WORLD_POOL_SIZE, World.WORLD_POOL_CONTAINER_SIZE);
     private org.jbox2d.collision.Collision collisionTester = new org.jbox2d.collision.Collision(pool);
 
-    private HashMap<CollideableTypes, ArrayList<Collideable>> itemsByType = new HashMap<CollideableTypes, ArrayList<Collideable>>();
+    private HashMap<CollideableTypes, ArrayList<Collideable>> itemsByType = new HashMap<>();
     CollideableTypes[][] collideablePairs = new CollideableTypes[][]{
             {CollideableTypes.PLAYER_SHIELD, CollideableTypes.ENEMY_WEAPON},
             {CollideableTypes.PLAYER_SHIELD, CollideableTypes.ENEMY},
@@ -38,7 +38,7 @@ public class CollisionManager {
 
         ArrayList<Collideable> v = itemsByType.get(item.getType());
         if (v == null) {
-            v = new ArrayList<Collideable>();
+            v = new ArrayList<>();
             itemsByType.put(item.getType(), v);
         }
 

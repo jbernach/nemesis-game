@@ -36,9 +36,9 @@ public class Missile extends DestroyWhenDissapearActor {
 
 
 	@Override
-	public AnimatedSprite initializeSprite() {
+	public void initializeSprite() {
 		Image imgSprite = game.plat.assets().getImage("images/sprites/missilie.png");
-		return new AnimatedSprite(imgSprite, 40, 32, 1, 0);
+		this.sprite = new AnimatedSprite(imgSprite, 40, 32, 1, 0);
 	}
 	
 	@Override

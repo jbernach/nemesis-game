@@ -21,11 +21,11 @@ public class Barrel extends Enemy {
     }
 
     @Override
-    public AnimatedSprite initializeSprite() {
+    public void initializeSprite() {
         Image imgSprite = this.game.plat.assets().getImage("images/sprites/barrells.png");
         AnimatedSprite sp = new AnimatedSprite(imgSprite, 64, 64, 4, 100);
+        this.sprite = sp;
 
-        return sp;
     }
 
 }

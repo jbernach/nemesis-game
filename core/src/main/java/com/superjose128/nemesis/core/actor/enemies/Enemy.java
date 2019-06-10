@@ -31,12 +31,12 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 		if (!this.isOutOfBounds() && this.isVisible()) {
 			Explosion explosion = new Explosion(world, this.getPos(),300) {
 				@Override
-				public AnimatedSprite initializeSprite() {
+				public void initializeSprite() {
 					Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode1.png");
 					AnimatedSprite sp = new AnimatedSprite(imgExplosionSprite, 64, 64, 8, 50);
 					sp.loop = false;
 
-					return sp;
+					this.sprite = sp;
 				}
 
 				@Override

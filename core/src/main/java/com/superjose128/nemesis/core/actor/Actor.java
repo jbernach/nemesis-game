@@ -22,8 +22,8 @@ import react.Signal;
  */
 public abstract class Actor implements Controllable, Collideable {
     protected final NemesisGame game;
-    public Signal<Boolean> alive = new Signal<Boolean>();
-    private boolean isAlive = false;
+    public Signal<Boolean> alive = new Signal<>();
+    private boolean isAlive;
     private boolean visible = true;
 
     protected AnimatedSprite sprite; // Actor animated character on screen
@@ -41,11 +41,11 @@ public abstract class Actor implements Controllable, Collideable {
         this.game = world.game();
         this.world = world;
         this.isAlive = true;
-        this.sprite = initializeSprite();
+        initializeSprite();
         this.alive.emit(true);
     }
 
-    public abstract AnimatedSprite initializeSprite();
+    public abstract void initializeSprite();
 
     public Layer getLayer() {
         if (this.sprite == null) return null;
@@ -57,8 +57,12 @@ public abstract class Actor implements Controllable, Collideable {
         if(!this.isAlive) return;
 
         this.isAlive = false;
-        this.sprite.dispose();
         alive.emit(false);
+
+        if (this.sprite != null && !this.isAlive ) {
+           this.sprite.dispose();
+           this.sprite = null;
+        }
     }
 
     public void update(int delta) {
@@ -185,10 +189,6 @@ public abstract class Actor implements Controllable, Collideable {
         return v;
     }
 
-    public boolean isAlive() {
-        return isAlive;
-    }
-
     @Override
     public void collisionCallback(Collideable hit) {
         // NOP
@@ -207,5 +207,14 @@ public abstract class Actor implements Controllable, Collideable {
         if (this.getLayer() != null) {
            this.getLayer().setVisible(visible);
         }
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.isAlive = alive;
+        this.alive.emit(alive);
     }
 }

@@ -108,15 +108,13 @@ public class AnimatedSprite {
     }
 
     public void dispose() {
-        synchronized (this){
-            if (this.disposed) return;
+        if (this.disposed) return;
 
-            this.disposed = true;
+        this.disposed = true;
 
-            if (this.layer != null) {
-                this.layer.close();
-                this.layer = null;
-            }
+        if (this.layer != null) {
+            this.layer.close();
+            this.layer = null;
         }
     }
 }
