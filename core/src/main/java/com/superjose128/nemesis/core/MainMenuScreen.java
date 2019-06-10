@@ -102,7 +102,6 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
     }
 
     private synchronized void flashStart() {
-        System.out.println("Key logger");
         if (flashing) return;
 
         this.flashing = true;
