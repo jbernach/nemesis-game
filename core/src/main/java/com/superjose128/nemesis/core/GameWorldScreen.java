@@ -36,6 +36,7 @@ public class GameWorldScreen extends ScreenStack.UIScreen{
 	public void hide(){
 		this.game.screens.remove(this);
 	}
+
 	/**
 	 * Setups the world for start playing it
 	 */

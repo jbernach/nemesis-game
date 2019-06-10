@@ -21,6 +21,7 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
     private ImageLayer logoLayer;
 
     final private int NUM_LABEL_START_FLASH = 10;
+    private boolean flashing;
 
     public MainMenuScreen(NemesisGame game) {
         super(game.plat);
@@ -66,7 +67,7 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
 
         imageTitle.state.onFailure(event -> {
             game.plat.log().error("No se pudo cargar la imagen del titulo.", event);
-            game.screens.remove(MainMenuScreen.this);
+            game.screens.remove(this);
         });
     }
 
@@ -74,15 +75,19 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
     public void wasShown() {
         super.wasShown();
         captureKeyboardAndPointer();
+        layer.add(logoLayer);
     }
 
     private void startNewGame() {
+        layer.remove(logoLayer);
+        this.game.plat.input().keyboardEvents.clearConnections();
         GameWorldScreen gameWorlScreen = new GameWorldScreen(this.game);
         game.screens.push(gameWorlScreen);
         gameWorlScreen.beginGame();
     }
 
     private void captureKeyboardAndPointer() {
+        this.layer.events().clearConnections();
         this.layer.events().connect(new Pointer.Listener() {
             @Override
             public void onStart(Pointer.Interaction interaction) {
@@ -90,15 +95,24 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
             }
         });
 
-        this.game.plat.input().keyboardEvents.connect(event -> flashStart());
+        this.game.plat.input().keyboardEvents.clearConnections();
+        this.game.plat.input().keyboardEvents.connect(event -> {
+            flashStart();
+        });
     }
 
-    private void flashStart() {
+    private synchronized void flashStart() {
+        System.out.println("Key logger");
+        if (flashing) return;
+
+        this.flashing = true;
+
         Animator animator = new Animator();
         this.paint.connect(animator.onPaint);
 
-        animator.repeat(logoLayer).delay(100).then().action(new Runnable() {
+        Runnable flash = new Runnable() {
             int cycle = 0;
+
             boolean started = false;
 
             @Override
@@ -109,16 +123,15 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
                     } else {
                         logoLayer.setAlpha(1);
                     }
-
                 } else if (!started) {
-
-                    // START!
                     started = true;
+                    MainMenuScreen.this.flashing = false;
                     startNewGame();
                 }
             }
-        });
+        };
 
+        animator.repeat(logoLayer).delay(100).then().action(flash);
     }
 
 }
