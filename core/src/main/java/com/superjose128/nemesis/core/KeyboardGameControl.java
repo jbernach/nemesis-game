@@ -1,5 +1,6 @@
 package com.superjose128.nemesis.core;
 
+import com.superjose128.nemesis.core.actor.enemies.Barrel;
 import com.superjose128.nemesis.core.actor.enemies.Chiquis;
 import com.superjose128.nemesis.core.actor.enemies.Enemy;
 import com.superjose128.nemesis.core.actor.weapons.PowerUpCapsule;
@@ -62,7 +63,7 @@ public class KeyboardGameControl extends Keyboard.KeySlot {
                 break;
             case E:
                 for (int i = 0; i < 20; i++) {
-                    Enemy enemy = new Chiquis(this.gameWorld);
+                    Enemy enemy = new Barrel(this.gameWorld);
                     enemy.setPos(GameWorld.WORLD_WIDTH / 2 + (float)Math.random() * GameWorld.WORLD_WIDTH / 2, (float)Math.random() * GameWorld.WORLD_HEIGHT);
                     enemy.setSpeed(100 * (float)Math.random());
                     enemy.moveLeft();

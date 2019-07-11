@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class GameSounds {
 	private final Platform platform;
 	private final SoundBoard sb;
-	public final HashMap<String, Playable> sounds = new HashMap();
+	public final HashMap<String, Playable> sounds = new HashMap<>();
 	
 	public GameSounds(Platform platform, Signal<Clock> paintclock){
 		this.platform = platform;
