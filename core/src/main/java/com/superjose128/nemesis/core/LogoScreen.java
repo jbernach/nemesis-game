@@ -7,7 +7,7 @@ import tripleplay.anim.Animator;
 import tripleplay.game.ScreenStack;
 
 public class LogoScreen extends ScreenStack.UIScreen {
-    public static final int DURATION = 2500; // 2,5 sec
+    private static final int DURATION = 2500; // 2,5 sec
 
     private final NemesisGame game;
 
@@ -30,9 +30,6 @@ public class LogoScreen extends ScreenStack.UIScreen {
 
         imageLogo = game.plat.assets().getImage("images/konami_logo.png");
         logo = new ImageLayer(imageLogo);
-
-        // Preload of game sounds
-        this.game.soundsFx.loadAllSounds();
 
         imageLogo.state.onComplete(image -> {
             float anchoImagenDeseado = this.size().width() / 4f;

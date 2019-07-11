@@ -1,8 +1,8 @@
 package com.superjose128.nemesis.core.powerup;
 
+import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
-import playn.core.Image;
 import pythagoras.f.Point;
 
 public class SpeedPowerUp extends PowerUp {
@@ -13,22 +13,21 @@ public class SpeedPowerUp extends PowerUp {
 	private float initialBlinkMs = 250f; // Initial interval of flame blink
 	private float blinkMsInc = - 20f; // On each level the blame blinks faster
 	
-	public SpeedPowerUp() {
-		super();
+	public SpeedPowerUp(NemesisGame game) {
+		super(game);
 		this.name = NAME;
 
 		this.relativeToActorPos = new Point(-92/2-20+5,-1);
 		this.maxLevels = 9;
-		this.basic = true; 
+		this.basic = true;
+
+		this.sprite = new AnimatedSprite(game.images.get("flame"), 20, 12, 2, initialBlinkMs);
 	}
 
 	@Override
 	public void onArmed(Player player) {
 		super.onArmed(player);
 		player.setSpeed(initialSpeed);
-
-		Image imgSprite = player.game().plat.assets().getImage("images/sprites/flame.png");
-		this.sprite = new AnimatedSprite(imgSprite, 20, 12, 2, initialBlinkMs);
 	}
 
 	@Override

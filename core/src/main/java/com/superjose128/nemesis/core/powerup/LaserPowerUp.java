@@ -9,23 +9,24 @@ import tripleplay.sound.Clip;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LaserPowerUp extends PowerUp {
-	private Clip fireSound;
+	private final Clip fireSound;
 	private final static int MAX_BULLETS = 1;
 	private AtomicInteger liveBullets = new AtomicInteger(0);
 	
-	public LaserPowerUp(){
-		super();
+	public LaserPowerUp(NemesisGame game){
+		super(game);
 		this.name = "LASER";
 				
 		this.maxLevels = 2;
 		this.basic = false;
 		this.excludes = new String[]{"FIRE","DOUBLE"};
+		fireSound = (Clip) game.soundsFx.get("normalFire");
 	}
 
 	@Override
 	public void onArmed(Player player) {
 		super.onArmed(player);
-		fireSound = (Clip) player.game().soundsFx.getSound("normalFire");
+
 	}
 
 	@Override

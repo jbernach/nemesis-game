@@ -1,17 +1,19 @@
 package com.superjose128.nemesis.core.powerup;
 
+import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import playn.core.Clock;
 import pythagoras.f.Point;
 
 /**
- * A powerup is a characteristic that can be applied to a player (xtra speed, a weapon, a shield, etc.)
+ * A powerup is a characteristic that can be applied to a player (extra speed, a weapon, a shield, etc.)
  * Can be increased with levels.
  * @author Joselito y Tere
  *
  */
 public abstract class PowerUp {
+	protected final NemesisGame game;
 	protected Player owner = null;
 
 	protected String name = "-";
@@ -31,7 +33,8 @@ public abstract class PowerUp {
 		
 	private boolean spriteOnLayer = false; // indicates if the sprite has been attached to the world's actor layer
 
-	protected PowerUp(){
+	protected PowerUp(NemesisGame game){
+		this.game = game;
 	}
 	
 	/**

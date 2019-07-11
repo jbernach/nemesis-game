@@ -121,15 +121,15 @@ public class GameWorld {
     }
 
     private void initWeaponBoard() {
-        weaponBoard1 = new WeaponBoard(plat, WORLD_WIDTH, SCORE_AREA_HEIGHT, 10);
+        weaponBoard1 = new WeaponBoard(game(), WORLD_WIDTH, SCORE_AREA_HEIGHT, 10);
         weaponSel1 = new WeaponSelectionModel(player1, weaponBoard1);
 
-        weaponSel1.addSelectablePowerUp(new SpeedPowerUp());
-        weaponSel1.addSelectablePowerUp(new MissilePowerUp());
-        weaponSel1.addSelectablePowerUp(new DoublePowerUp());
-        weaponSel1.addSelectablePowerUp(new LaserPowerUp());
-        weaponSel1.addSelectablePowerUp(new OptionPowerUp());
-        weaponSel1.addSelectablePowerUp(new ShieldPowerUp());
+        weaponSel1.addSelectablePowerUp(new SpeedPowerUp(game()));
+        weaponSel1.addSelectablePowerUp(new MissilePowerUp(game()));
+        weaponSel1.addSelectablePowerUp(new DoublePowerUp(game()));
+        weaponSel1.addSelectablePowerUp(new LaserPowerUp(game()));
+        weaponSel1.addSelectablePowerUp(new OptionPowerUp(game()));
+        weaponSel1.addSelectablePowerUp(new ShieldPowerUp(game()));
 
         scoreLayer.add(new Layer() {
             @Override

@@ -8,7 +8,6 @@ import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.Shape;
-import playn.core.Image;
 import pythagoras.f.Point;
 
 public class Missile extends DestroyWhenDissapearActor {
@@ -37,8 +36,7 @@ public class Missile extends DestroyWhenDissapearActor {
 
 	@Override
 	public void initializeSprite() {
-		Image imgSprite = game.plat.assets().getImage("images/sprites/missilie.png");
-		this.sprite = new AnimatedSprite(imgSprite, 40, 32, 1, 0);
+		this.sprite = new AnimatedSprite(game.images.get("missilie"), 40, 32, 1, 0);
 	}
 	
 	@Override

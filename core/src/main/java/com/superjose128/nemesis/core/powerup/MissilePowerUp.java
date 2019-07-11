@@ -1,5 +1,6 @@
 package com.superjose128.nemesis.core.powerup;
 
+import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.weapons.Missile;
 import pythagoras.f.Point;
 
@@ -10,8 +11,8 @@ public class MissilePowerUp extends PowerUp {
 	private int maxBullets = 1;
 	private AtomicInteger liveBullets = new AtomicInteger(0);
 	
-	public MissilePowerUp(){
-		super();
+	public MissilePowerUp(NemesisGame game){
+		super(game);
 		this.name = "MISSILE";
 				
 		this.maxLevels = 2;

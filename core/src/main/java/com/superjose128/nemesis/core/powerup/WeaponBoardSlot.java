@@ -12,7 +12,8 @@ public class WeaponBoardSlot {
 	protected int row = 0;
 	protected int col = 0;
 	
-	public WeaponBoardSlot(PowerUp pup){
+	public WeaponBoardSlot(WeaponBoard board, PowerUp pup){
+		this.board = board;
 		this.powerup = pup;
 	}
 	
@@ -50,7 +51,7 @@ public class WeaponBoardSlot {
 		float x = col*w + margin;
 		float y = row*h;
 
-		Canvas canvas = board.plat().graphics().createCanvas(w, h);
+		Canvas canvas = board.game.plat.graphics().createCanvas(w, h);
 		/*canvas.setFillColor(Colors.BLACK);
 		canvas.fillRect(0, 0, w, h);*/
 		

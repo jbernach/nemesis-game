@@ -8,7 +8,6 @@ import playn.core.TextFormat;
 import playn.core.TextLayout;
 import playn.scene.ImageLayer;
 import playn.scene.Pointer;
-import tripleplay.anim.AnimBuilder;
 import tripleplay.anim.Animator;
 import tripleplay.game.ScreenStack;
 import tripleplay.util.Colors;
@@ -66,7 +65,7 @@ public class MainMenuScreen extends ScreenStack.UIScreen {
         });
 
         imageTitle.state.onFailure(event -> {
-            game.plat.log().error("No se pudo cargar la imagen del titulo.", event);
+            game.plat.log().error("Can't load title image.", event);
             game.screens.remove(this);
         });
     }

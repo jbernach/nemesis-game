@@ -4,7 +4,6 @@ import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.Shape;
-import playn.core.Image;
 
 public class Chiquis extends Enemy {
     private final PolygonShape shape = new PolygonShape();
@@ -22,8 +21,7 @@ public class Chiquis extends Enemy {
 
     @Override
     public void initializeSprite() {
-        Image imgSprite = game.plat.assets().getImage("images/sprites/chiquis.png");
-        AnimatedSprite sp = new AnimatedSprite(imgSprite, 64, 64, 1, 0);
+        AnimatedSprite sp = new AnimatedSprite(game.images.get("chiqui"), 64, 64, 1, 0);
 
         this.sprite = sp;
     }

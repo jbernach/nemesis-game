@@ -6,7 +6,6 @@ import com.superjose128.nemesis.core.powerup.*;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.Shape;
-import playn.core.Image;
 import tripleplay.sound.Playable;
 
 
@@ -15,7 +14,6 @@ public class PlayerMetallion extends Player {
     final static int ROW_UP = 1;
     final static int ROW_DOWN = 2;
 
-    private Image imgSprite;
     private static final PolygonShape shape = new PolygonShape();
 
     public PlayerMetallion(GameWorld world) {
@@ -30,10 +28,10 @@ public class PlayerMetallion extends Player {
 
     @Override
     public void initializePowerUps() {
-        PowerUp pup = new SpeedPowerUp();
+        PowerUp pup = new SpeedPowerUp(game);
         powerUps.put(pup.getName(), pup);
         pup.onArmed(this);
-        pup = new BasicFirePowerUp();
+        pup = new BasicFirePowerUp(game);
         powerUps.put(pup.getName(), pup);
         pup.onArmed(this);
     }
@@ -77,9 +75,7 @@ public class PlayerMetallion extends Player {
 
     @Override
     public void initializeSprite() {
-        this.imgSprite = game.plat.assets().getImage("images/sprites/metallion.png");
-
-        AnimatedSprite sp = new AnimatedSprite(imgSprite, 92, 64, 2, 600);
+        AnimatedSprite sp = new AnimatedSprite(game.images.get("metallion"), 92, 64, 2, 600);
         sp.loop = false;
 
         this.sprite = sp;
@@ -89,7 +85,7 @@ public class PlayerMetallion extends Player {
     public void die() {
         this.setVisible(false);
         //remove Powerups
-        PowerUp powerUpsArray[] = this.powerUps.values().toArray(new PowerUp[0]);
+        PowerUp[] powerUpsArray = this.powerUps.values().toArray(new PowerUp[0]);
         for(PowerUp poup:powerUpsArray){
             this.disarmPowerUp(poup.getName());
         }
@@ -97,8 +93,7 @@ public class PlayerMetallion extends Player {
         Explosion explosion = new Explosion(this.world, this.getPos(), 2000) {
             @Override
             public void initializeSprite() {
-                Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode_viper.png");
-                AnimatedSprite sp = new AnimatedSprite(imgExplosionSprite, 128, 56, 5, 400);
+                AnimatedSprite sp = new AnimatedSprite(game.images.get("explode_viper"), 128, 56, 5, 400);
                 sp.loop = false;
 
                 this.sprite = sp;
@@ -106,7 +101,7 @@ public class PlayerMetallion extends Player {
 
             @Override
             public Playable getSound() {
-                return this.game.soundsFx.getSound("explodeViper");
+                return this.game.soundsFx.get("explodeViper");
             }
         };
 

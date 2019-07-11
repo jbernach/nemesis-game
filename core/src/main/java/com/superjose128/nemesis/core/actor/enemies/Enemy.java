@@ -5,7 +5,6 @@ import com.superjose128.nemesis.core.actor.DestroyWhenDissapearActor;
 import com.superjose128.nemesis.core.actor.Explosion;
 import com.superjose128.nemesis.core.collision.CollideableTypes;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
-import playn.core.Image;
 import tripleplay.sound.Playable;
 
 public abstract class Enemy extends DestroyWhenDissapearActor {
@@ -32,8 +31,7 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 			Explosion explosion = new Explosion(world, this.getPos(),300) {
 				@Override
 				public void initializeSprite() {
-					Image imgExplosionSprite = game.plat.assets().getImage("images/sprites/explode1.png");
-					AnimatedSprite sp = new AnimatedSprite(imgExplosionSprite, 64, 64, 8, 50);
+					AnimatedSprite sp = new AnimatedSprite(game.images.get("explode1"), 64, 64, 8, 50);
 					sp.loop = false;
 
 					this.sprite = sp;
@@ -41,7 +39,7 @@ public abstract class Enemy extends DestroyWhenDissapearActor {
 
 				@Override
 				public Playable getSound() {
-					return this.game.soundsFx.getSound("explode1");
+					return this.game.soundsFx.get("explode1");
 				}
 			};
 

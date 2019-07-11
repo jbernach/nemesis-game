@@ -1,5 +1,6 @@
 package com.superjose128.nemesis.core.powerup;
 
+import com.superjose128.nemesis.core.NemesisGame;
 import playn.core.*;
 import tripleplay.util.Colors;
 
@@ -7,11 +8,11 @@ import java.util.ArrayList;
 
 
 public class WeaponBoard {
-    private final Platform plat;
+    public final NemesisGame game;
     private final Font font;
     private final TextFormat textFormat;
 
-    private ArrayList<WeaponBoardSlot> slots = new ArrayList<WeaponBoardSlot>();
+    private ArrayList<WeaponBoardSlot> slots = new ArrayList<>();
     private int currentSlotIndex = -1; // -1 means none selected
 
     private int lives = 0;
@@ -23,8 +24,8 @@ public class WeaponBoard {
     private int rows = 1;
     private int maxColsRow = 1;
 
-    public WeaponBoard(Platform platform, float width, float height, int maxColsPerRow) {
-        this.plat = platform;
+    public WeaponBoard(NemesisGame game, float width, float height, int maxColsPerRow) {
+        this.game = game;
         this.setMaxColsRow(maxColsPerRow);
         this.width = width;
         this.height = height;
@@ -92,7 +93,6 @@ public class WeaponBoard {
 
     public void addSlot(WeaponBoardSlot slot){
         slots.add(slot);
-        slot.board = this;
     }
 
     public void inserBefore(WeaponBoardSlot slot, String name){
@@ -129,7 +129,7 @@ public class WeaponBoard {
             WeaponBoardSlot ws = (WeaponBoardSlot)arr[i];
 
             if(ws.getName().equalsIgnoreCase(value.getName())){
-                plat.log().debug("level"+value.getLevel() + " max:"+value.getMaxLevels());
+                game.plat.log().debug("level"+value.getLevel() + " max:"+value.getMaxLevels());
                 if(value.getLevel() == value.getMaxLevels()){
                     ws.setDisabled(true);
                 }
@@ -153,7 +153,7 @@ public class WeaponBoard {
         float offX = getWidth() - w - 40;//getChooserWidth() + (wAvail - w)/2;
         float offY = 0;
 
-        Canvas canvas = plat.graphics().createCanvas(w, h);
+        Canvas canvas = game.plat.graphics().createCanvas(w, h);
 	
 		/*canvas.setFillColor(Colors.BLACK);
 		canvas.fillRect(0, 0, w, h);*/
@@ -168,7 +168,7 @@ public class WeaponBoard {
             canvas.fillRect(5, 5, w-10, h-10);
 
             canvas.setFillColor(Colors.YELLOW);
-            TextLayout textLayout = plat.graphics().layoutText("ENABLE", textFormat);
+            TextLayout textLayout = game.plat.graphics().layoutText("ENABLE", textFormat);
             canvas.fillText(textLayout, (w - textLayout.size.width())/2, 8);
 
             canvas.setStrokeWidth(2);
@@ -191,7 +191,7 @@ public class WeaponBoard {
             canvas.drawLine(5, h-5, w-5, h-5);
 
             canvas.setFillColor(Colors.BLUE);
-            TextLayout textLayout = plat.graphics().layoutText(slot.getName(), textFormat);
+            TextLayout textLayout = game.plat.graphics().layoutText(slot.getName(), textFormat);
             canvas.fillText(textLayout, (w - textLayout.size.width())/2, 8);
 
         }
@@ -203,15 +203,15 @@ public class WeaponBoard {
         float w = getWidth();
         float h = getHeight();
 
-        Canvas canvas = plat.graphics().createCanvas(w, h);
+        Canvas canvas = game.plat.graphics().createCanvas(w, h);
 
         canvas.setFillColor(Colors.BLACK);
         canvas.fillRect(0, 0, w, h);
 
         canvas.setFillColor(Colors.WHITE);
-        TextLayout textLayout = plat.graphics().layoutText("" + this.getLives() + " LIVES", textFormat);
+        TextLayout textLayout = game.plat.graphics().layoutText("" + this.getLives() + " LIVES", textFormat);
         canvas.fillText(textLayout, getChooserHMargin(), getChooserHeight() + 8);
-        textLayout = plat.graphics().layoutText("" + this.getScore(), textFormat);
+        textLayout = game.plat.graphics().layoutText("" + this.getScore(), textFormat);
         canvas.fillText(textLayout, getChooserHMargin() + getChooserWidth()/3, getChooserHeight() + 8);
 
         surface.draw(canvas.snapshot().tile(), 0, 0);
@@ -232,9 +232,5 @@ public class WeaponBoard {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    public Platform plat() {
-        return plat;
     }
 }

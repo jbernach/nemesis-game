@@ -4,7 +4,6 @@ import com.superjose128.nemesis.core.GameWorld;
 import com.superjose128.nemesis.core.sprites.AnimatedSprite;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.Shape;
-import playn.core.Image;
 
 public class Barrel extends Enemy {
     private final PolygonShape shape = new PolygonShape();
@@ -22,9 +21,7 @@ public class Barrel extends Enemy {
 
     @Override
     public void initializeSprite() {
-        Image imgSprite = this.game.plat.assets().getImage("images/sprites/barrells.png");
-        AnimatedSprite sp = new AnimatedSprite(imgSprite, 64, 64, 4, 100);
-        this.sprite = sp;
+        this.sprite = new AnimatedSprite(this.game.images.get("barrel"), 64, 64, 4, 100);
 
     }
 

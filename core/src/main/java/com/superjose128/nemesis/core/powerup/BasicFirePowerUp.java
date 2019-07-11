@@ -1,5 +1,6 @@
 package com.superjose128.nemesis.core.powerup;
 
+import com.superjose128.nemesis.core.NemesisGame;
 import com.superjose128.nemesis.core.actor.Player;
 import com.superjose128.nemesis.core.actor.weapons.BasicBullet;
 import pythagoras.f.Point;
@@ -8,21 +9,21 @@ import tripleplay.sound.Clip;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BasicFirePowerUp extends PowerUp {
-	private Clip fireSound;
+	private final Clip fireSound;
 	private final static int MAX_BULLETS = 3;
 	private AtomicInteger liveBullets = new AtomicInteger(0);
 	
-	public BasicFirePowerUp(){
-		super();
+	public BasicFirePowerUp(NemesisGame game){
+		super(game);
 		this.name = "FIRE";
-
-		this.basic = true; 
+		this.basic = true;
+		fireSound = (Clip) game.soundsFx.get("normalFire");
 	}
 
 	@Override
 	public void onArmed(Player player) {
 		super.onArmed(player);
-		fireSound = (Clip) player.game().soundsFx.getSound("normalFire");
+
 	}
 
 	@Override

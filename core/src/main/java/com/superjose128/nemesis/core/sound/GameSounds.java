@@ -10,18 +10,22 @@ import tripleplay.sound.SoundBoard;
 import java.util.HashMap;
 
 public class GameSounds {
+	private final Platform platform;
 	private final SoundBoard sb;
-	public final HashMap<String, Playable> sounds = new HashMap<String, Playable>();
+	public final HashMap<String, Playable> sounds = new HashMap();
 	
 	public GameSounds(Platform platform, Signal<Clock> paintclock){
+		this.platform = platform;
 		this.sb = new SoundBoard(platform, paintclock);
 		this.sb.volume.update(0.5f); // Medio volumen
+		loadAllSounds();
 	}
 	
 	/**
-	 * Preload of the most important sounds of the game, to be accesed throug {@link getSound}
+	 * Preload of the most important sounds of the game
 	 */
-	public void loadAllSounds(){
+	private void loadAllSounds(){
+		platform.log().info("Loading sounds...");
 		loadClipSound("normalFire","sounds/normalFire");
 		loadClipSound("pause","sounds/pause");
 		loadClipSound("powerArm","sounds/powerArm");
@@ -30,13 +34,13 @@ public class GameSounds {
 		loadClipSound("explodeViper","sounds/explodeViper");
 		loadClipSound("explode1","sounds/explode1");	}
 	
-	public void loadClipSound(String key, String path){
+	private void loadClipSound(String key, String path){
 		Clip clip = sb.getClip(path);
 		sounds.put(key, clip);
 		clip.preload();
 	}
 	
-	public Playable getSound(String key){
+	public Playable get(String key){
 		return sounds.get(key);
 	}
 	
